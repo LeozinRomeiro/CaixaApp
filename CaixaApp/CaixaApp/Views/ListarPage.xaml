@@ -4,9 +4,21 @@
              x:Class="CaixaApp.Views.ListarPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <StackLayout Orientation="Horizontal">
+                <Entry x:Name="texteBuscado" Keyboard="Plain" Placeholder="Nome da caixa" HorizontalOptions="StartAndExpand"/>
+                <Button x:Name="buttonLocalizar" Text="Localizar" Clicked="buttonLocalizar_Clicked"/>
+            </StackLayout>
+            <ListView x:Name="ListaFerramenta" HasUnevenRows="True" SeparatorColor="Red" Margin="15" ItemSelected="ListaFerramenta_ItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding Titulo,StringFormat='Título: {0}'}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

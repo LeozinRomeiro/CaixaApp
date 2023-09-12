@@ -3,7 +3,9 @@ using SQLite;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Text;
+using Xamarin.Forms;
 
 namespace CaixaApp.Data
 {
@@ -77,6 +79,22 @@ namespace CaixaApp.Data
                 throw;
             }
         }
-
+        public List<Ferramenta> EncontrarFerramentas(int id)
+        {
+            List<Ferramenta> ferramentas = new List<Ferramenta>();
+            try
+            {
+                var resposta = from caixa in con.Table<Caixa>() 
+                               join ferramenta in con.Table<Ferramenta>()
+                               on caixa.IdFerramenta equals ferramenta.Id
+                               where caixa.Id == id select p;
+                ferramentas = resposta.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return ferramentas;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CaixaApp.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,27 @@ namespace CaixaApp.Views
         public ListarPage()
         {
             InitializeComponent();
+        }
+
+        public void PreencherTela()
+        {
+            string textoBuscado = texteBuscado.Text;
+            if (int.TryParse(textoBuscado, out int NumerBuscado))
+            {
+                Context context = new Context(App.Path);
+                ListaFerramenta.ItemsSource = context.LocalizarFerramenta(NumerBuscado);
+            }
+            
+        }
+
+        private void buttonLocalizar_Clicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ListaFerramenta_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+
         }
     }
 }

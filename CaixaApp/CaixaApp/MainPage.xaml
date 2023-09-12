@@ -10,6 +10,7 @@
         <Button Text="Cadastrar" x:Name="buttonCadastrar" Clicked="buttonCadastrar_Clicked"/>
         <Button Text="Listar todos" x:Name="buttonListar" Clicked="buttonListar_Clicked"/>
         <Button Text="Ver caixa" x:Name="buttonVer" Clicked="buttonVer_Clicked"/>
+        <ImageButton Source="Leitor" Background="Black" x:Name="ImageButtonLeitor" Clicked="ImageButtonLeitor_Clicked" />
     </StackLayout>
 
 </ContentPage>

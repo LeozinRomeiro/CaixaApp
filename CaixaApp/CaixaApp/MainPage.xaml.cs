@@ -29,5 +29,10 @@ namespace CaixaApp
         {
             await Navigation.PushAsync(new Views.CaixaPage());
         }
+
+        private async void ImageButtonLeitor_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Views.LeitorPage());
+        }
     }
 }
