@@ -9,7 +9,7 @@
                 <Label Text="Selecione o tipo de cadastro:"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-                <Picker x:Name="TipoCadastroPicker" HorizontalTextAlignment="Center" BackgroundColor="Black" HorizontalOptions="Center" TextColor="Wheat">
+                <Picker x:Name="TipoCadastroPicker" HorizontalTextAlignment="Center" BackgroundColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Wheat">
                     <Picker.Items>
                         <x:String>Caixa</x:String>
                         <x:String>Ferramenta</x:String>
