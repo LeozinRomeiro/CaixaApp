@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
@@ -43,11 +44,19 @@ namespace CaixaApp.Data
                 throw;
             }
         }
-        public Ferramenta LocalizarFerramenta(int id)
+        public List<Ferramenta> LocalizarFerramentasNaCaixa(int id)
         {
             try
             {
-                return con.Table<Ferramenta>().FirstOrDefault(x => x.Id == id);
+                Caixa caixa = con.Table<Caixa>().FirstOrDefault(x => x.IdFerramenta == id);
+                if (caixa!=null)
+                {
+                    return con.Table<Ferramenta>().Where(x=>x.Id==caixa.IdFerramenta).ToList();
+                }
+                else
+                {
+                    return new List<Ferramenta>();
+                }
             }
             catch (Exception)
             {
@@ -79,22 +88,22 @@ namespace CaixaApp.Data
                 throw;
             }
         }
-        public List<Ferramenta> EncontrarFerramentas(int id)
-        {
-            List<Ferramenta> ferramentas = new List<Ferramenta>();
-            try
-            {
-                var resposta = from caixa in con.Table<Caixa>() 
-                               join ferramenta in con.Table<Ferramenta>()
-                               on caixa.IdFerramenta equals ferramenta.Id
-                               where caixa.Id == id select p;
-                ferramentas = resposta.ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return ferramentas;
-        }
+        //public List<Ferramenta> EncontrarFerramentas(int id)
+        //{
+        //    List<Ferramenta> ferramentas = new List<Ferramenta>();
+        //    try
+        //    {
+        //        var resposta = from caixa in con.Table<Caixa>() 
+        //                       join ferramenta in con.Table<Ferramenta>()
+        //                       on caixa.IdFerramenta equals ferramenta.Id
+        //                       where caixa.Id == id select p;
+        //        ferramentas = resposta.ToList();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //    return ferramentas;
+        //}
     }
 }

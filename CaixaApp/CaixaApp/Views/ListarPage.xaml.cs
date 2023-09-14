@@ -24,7 +24,7 @@ namespace CaixaApp.Views
             if (int.TryParse(textoBuscado, out int NumerBuscado))
             {
                 Context context = new Context(App.Path);
-                ListaFerramenta.ItemsSource = context.LocalizarFerramenta(NumerBuscado);
+                ListaFerramenta.ItemsSource = context.LocalizarFerramentasNaCaixa(NumerBuscado);
             }
             
         }
