@@ -18,10 +18,12 @@
                 </Picker>
             </StackLayout>
 
-            <Entry Placeholder="Id" x:Name="IdEntry"/>
-            <Entry Placeholder="Nome" x:Name="NomeEntry" />
-            <Entry Placeholder="Setor" x:Name="SetorEntry" />
-            <Entry Placeholder="Cargo" x:Name="CargoEntry" />
+            <Entry Placeholder="" x:Name="Camp1Entry"/>
+            <Entry Placeholder="" x:Name="Camp2Entry" />
+            <Entry Placeholder="" x:Name="Camp3Entry" />
+            <Entry Placeholder="" x:Name="Camp4Entry" />
+            <Entry Placeholder="" x:Name="Camp5Entry" />
+            <Entry Placeholder="" x:Name="Camp6Entry" />
 
             <StackLayout Orientation="Horizontal" Margin="20,0,20,20">
                 <Button x:Name="buttonSalvar" Text="Inserir" Clicked="buttonSalvar_Clicked" HorizontalOptions="FillAndExpand"/>

@@ -19,6 +19,33 @@ namespace CaixaApp.Views
             InitializeComponent();
         }
 
+        public void PreencherCamps()
+        {
+            string Selecionado = TipoCadastroPicker.SelectedItem.ToString();
+            switch (Selecionado)
+            {
+                case "Caixa":
+                    Camp1Entry.Placeholder = "Id";
+                    Camp2Entry.Placeholder = "IdColaborador";
+                    Camp3Entry.Placeholder = "Codigo";
+                    break;
+                case "Ferramenta":
+                    Camp1Entry.Placeholder = "Id";
+                    Camp3Entry.Placeholder = "IdCaixa";
+                    Camp4Entry.Placeholder = "Tipo";
+                    Camp5Entry.Placeholder = "Nome";
+                    Camp6Entry.Placeholder = "Quantidade";
+                    Camp2Entry.Placeholder = "Codigo";
+                    break;
+                case "Colaborador":
+                    // Lógica de cadastro de colaborador
+                    break;
+                default:
+                    // Trate qualquer seleção inválida aqui
+                    break;
+            }
+        }
+
         private async void buttontCancelar_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new MainPage());
@@ -28,22 +55,45 @@ namespace CaixaApp.Views
         {
             try
             {
-                Colaborador colaborador = new Colaborador();
-                colaborador.Nome = NomeEntry.Text;
-                colaborador.Setor = SetorEntry.Text;
-                colaborador.Cargo = CargoEntry.Text;
                 Context context = new Context(App.Path);
-                if (buttonSalvar.Text == "Inserir")
+                string Selecionado = TipoCadastroPicker.SelectedItem.ToString();
+                switch (Selecionado)
                 {
-                    context.Inserir(colaborador);
-                    await DisplayAlert("Resultado", NomeEntry.Text + " inserido com sucesso!", "OK");
+                    case "Caixa":
+                        Caixa caixa = new Caixa();
+                        caixa.Id = int.Parse(Camp1Entry.Text);
+                        caixa.IdColaborador = int.Parse(Camp2Entry.Text);
+                        caixa.Codigo = Camp3Entry.Text;
+                        context.Inserir(caixa);
+                        break;
+                    case "Ferramenta":
+                        Ferramenta ferramenta = new Ferramenta();
+                        ferramenta.Id = int.Parse(Camp1Entry.Text);
+                        ferramenta.Codigo = Camp2Entry.Text;
+                        ferramenta.Tipo = Camp3Entry.Text;
+                        ferramenta.Nome = Camp4Entry.Text;
+                        ferramenta.Quantidade = int.Parse(Camp5Entry.Text);
+                        context.Inserir(ferramenta);
+                        break;
+                    case "Colaborador":
+                        // Lógica de cadastro de colaborador
+                        break;
+                    default:
+                        // Trate qualquer seleção inválida aqui
+                        break;
                 }
-                else
-                {
-                    colaborador.Id = Convert.ToInt32(IdEntry.Text);
-                    context.Inserir(colaborador);
-                    await DisplayAlert("Resultado", NomeEntry.Text + " alterado com sucesso!", "OK");
-                }
+                await DisplayAlert("Resultado", Camp2Entry.Text + " inserido com sucesso!", "OK");
+
+                //if (buttonSalvar.Text == "Inserir")
+                //{
+                //    context.Inserir(colaborador);
+                //       }
+                //else
+                //{
+                //    colaborador.Id = Convert.ToInt32(IdEntry.Text);
+                //    context.Inserir(colaborador);
+                //    await DisplayAlert("Resultado", NomeEntry.Text + " alterado com sucesso!", "OK");
+                //}
                 await Navigation.PushAsync(new MainPage());
             }
             catch (Exception ex)
@@ -58,7 +108,7 @@ namespace CaixaApp.Views
             if (resp == true)
             {
                 Context context = new Context(App.DataName);
-                int id = Convert.ToInt32(IdEntry.Text);
+                int id = Convert.ToInt32(Camp1Entry.Text);
                 context.Excluir(id);
                 await DisplayAlert("Sucesso", "Nota excluída com sucesso", "OK");
                 await Navigation.PushAsync(new MainPage());

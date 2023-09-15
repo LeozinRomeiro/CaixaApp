@@ -9,6 +9,6 @@ namespace CaixaApp.Model
     {
         [PrimaryKey, AutoIncrement] public int Id { get; set; } = 0;
         [NotNull] public int IdColaborador { get; set; } = 0;
-        [NotNull] public int IdFerramenta { get; set; } = 0;
+        [NotNull] public string Codigo { get; set; }
     }
 }

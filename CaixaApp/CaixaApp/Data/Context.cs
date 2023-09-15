@@ -48,10 +48,10 @@ namespace CaixaApp.Data
         {
             try
             {
-                Caixa caixa = con.Table<Caixa>().FirstOrDefault(x => x.IdFerramenta == id);
-                if (caixa!=null)
+                Caixa caixa = con.Table<Caixa>().FirstOrDefault(x => x.Id == id);
+                if (caixa != null)
                 {
-                    return con.Table<Ferramenta>().Where(x=>x.Id==caixa.IdFerramenta).ToList();
+                    return con.Table<Ferramenta>().Where(x => x.IdCaixa == id).ToList();
                 }
                 else
                 {
