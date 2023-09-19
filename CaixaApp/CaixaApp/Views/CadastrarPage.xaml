@@ -9,7 +9,7 @@
                 <Label Text="Selecione o tipo de cadastro:"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-                <Picker x:Name="TipoCadastroPicker" HorizontalTextAlignment="Center" BackgroundColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Wheat">
+                <Picker x:Name="TipoCadastroPicker" SelectedItem="Colaborador" HorizontalTextAlignment="Center" BackgroundColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Wheat">
                     <Picker.Items>
                         <x:String>Caixa</x:String>
                         <x:String>Ferramenta</x:String>
@@ -18,7 +18,7 @@
                 </Picker>
             </StackLayout>
 
-            <Entry Placeholder="" x:Name="Camp1Entry"/>
+            <Entry Text="{Binding codigo}" Placeholder="" x:Name="Camp1Entry"/>
             <Entry Placeholder="" x:Name="Camp2Entry" />
             <Entry Placeholder="" x:Name="Camp3Entry" />
             <Entry Placeholder="" x:Name="Camp4Entry" />
@@ -29,6 +29,9 @@
                 <Button x:Name="buttonSalvar" Text="Inserir" Clicked="buttonSalvar_Clicked" HorizontalOptions="FillAndExpand"/>
                 <Button x:Name="buttonExcluir" Text="Excluir" Clicked="buttonExcluir_Clicked" IsVisible="false" HorizontalOptions="FillAndExpand"/>
                 <Button x:Name="buttontCancelar" Text="Cancelar" Clicked="buttontCancelar_Clicked" HorizontalOptions="FillAndExpand" />
+            </StackLayout>
+            <StackLayout>
+                <ImageButton Source="leitor" BackgroundColor="Transparent" x:Name="Leitor" Clicked="Leitor_Clicked"/>
             </StackLayout>
 
         </StackLayout>

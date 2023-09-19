@@ -14,14 +14,22 @@ namespace CaixaApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CadastrarPage : ContentPage
     {
+        static string Selecionado;
         public CadastrarPage()
         {
             InitializeComponent();
         }
 
+        public async void EscolherSelecionado()
+        {
+            Selecionado = await DisplayActionSheet("Escolhar o cadastrado:", "Cancelar", null, "Caixa", "Ferramenta", "");
+            TipoCadastroPicker.SelectedItem = Selecionado;
+            PreencherCamps();
+        }
+
         public void PreencherCamps()
         {
-            string Selecionado = TipoCadastroPicker.SelectedItem.ToString();
+            Selecionado = TipoCadastroPicker.SelectedItem.ToString();
             switch (Selecionado)
             {
                 case "Caixa":
@@ -56,7 +64,7 @@ namespace CaixaApp.Views
             try
             {
                 Context context = new Context(App.Path);
-                string Selecionado = TipoCadastroPicker.SelectedItem.ToString();
+                Selecionado = TipoCadastroPicker.SelectedItem.ToString();
                 switch (Selecionado)
                 {
                     case "Caixa":
@@ -113,6 +121,11 @@ namespace CaixaApp.Views
                 await DisplayAlert("Sucesso", "Nota excluída com sucesso", "OK");
                 await Navigation.PushAsync(new MainPage());
             }
+        }
+
+        private async void Leitor_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new LeitorPage(this));
         }
     }
 

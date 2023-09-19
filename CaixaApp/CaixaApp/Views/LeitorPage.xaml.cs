@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CaixaApp.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,23 +13,23 @@ namespace CaixaApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LeitorPage : ContentPage
     {
-        public LeitorPage()
+        private ContentPage DestinoPage;
+        public LeitorPage(ContentPage page)
         {
             InitializeComponent();
+            DestinoPage = page;
         }
 
         private async void ZXingScannerView_OnScanResult(ZXing.Result result)
         {
-            string codigo;
-            Device.BeginInvokeOnMainThread(() =>
+            resultCodigo.Text = result.Text;
+            
+            CodigoBarras codigo = new CodigoBarras
             {
-                resultCodigo.Text = result.Text + " (type: " + result.BarcodeFormat.ToString() + ")";
-                codigo = result.Text;
-            });
-            codigo=resultCodigo.Text;
+                Codigo = resultCodigo.Text,
+            };
+            DestinoPage.BindingContext = codigo;
             await Navigation.PopAsync();
-            Codigo?.Invoke(this, codigo);
         }
-        public event EventHandler<string> Codigo;
     }
 }

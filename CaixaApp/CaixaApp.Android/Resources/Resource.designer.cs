@@ -14,7 +14,7 @@ namespace CaixaApp.Droid
 {
 	
 	
-	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Android.Build.Tasks", "13.2.1.111")]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Android.Build.Tasks", "13.2.0.93")]
 	public partial class Resource
 	{
 		
@@ -16559,7 +16559,7 @@ namespace CaixaApp.Droid
 			public const int ic_mtrl_chip_close_circle = 2131165290;
 			
 			// aapt resource value: 0x7F07006B
-			public const int Leitor = 2131165291;
+			public const int leitor = 2131165291;
 			
 			// aapt resource value: 0x7F07006C
 			public const int material_cursor_drawable = 2131165292;
