@@ -18,6 +18,7 @@ namespace CaixaApp.Views
         public CadastrarPage()
         {
             InitializeComponent();
+            EscolherSelecionado();
         }
 
         public async void EscolherSelecionado()

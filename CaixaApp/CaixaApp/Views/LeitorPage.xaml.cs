@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using ZXing.Mobile;
 
 namespace CaixaApp.Views
 {
@@ -22,14 +23,24 @@ namespace CaixaApp.Views
 
         private async void ZXingScannerView_OnScanResult(ZXing.Result result)
         {
-            resultCodigo.Text = result.Text;
-            
-            CodigoBarras codigo = new CodigoBarras
+            // Atualize o BindingContext na thread principal
+            await Device.BeginInvokeOnMainThread(async () =>
             {
-                Codigo = resultCodigo.Text,
-            };
-            DestinoPage.BindingContext = codigo;
-            await Navigation.PopAsync();
+                resultCodigo.Text = result.Text;
+                CodigoBarras codigo = new CodigoBarras
+                {
+                    Codigo = result.Text,
+                };
+                DestinoPage.BindingContext = codigo;
+                await Navigation.PopAsync();
+            });
+
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            scannerView.OnScanResult -= ZXingScannerView_OnScanResult;
         }
     }
 }

@@ -4,6 +4,6 @@
              x:Class="CaixaApp.Views.LeitorPage" xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms">
     <StackLayout>
         <Label x:Name="resultCodigo"/>
-        <zxing:ZXingScannerView IsScanning="True" OnScanResult="ZXingScannerView_OnScanResult" />
+        <zxing:ZXingScannerView x:Name="scannerView" IsScanning="True" OnScanResult="ZXingScannerView_OnScanResult" />
     </StackLayout>
 </ContentPage>
