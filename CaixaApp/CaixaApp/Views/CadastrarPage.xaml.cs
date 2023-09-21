@@ -37,6 +37,9 @@ namespace CaixaApp.Views
                     Camp1Entry.Placeholder = "Id";
                     Camp2Entry.Placeholder = "IdColaborador";
                     Camp3Entry.Placeholder = "Codigo";
+                    Camp4Entry.Placeholder = "";
+                    Camp5Entry.Placeholder = "";
+                    Camp6Entry.Placeholder = "";
                     break;
                 case "Ferramenta":
                     Camp1Entry.Placeholder = "Id";
@@ -127,6 +130,12 @@ namespace CaixaApp.Views
         private async void Leitor_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new LeitorPage(this));
+            Camp1Entry.SetBinding(Entry.TextProperty, new Binding("Codigo"));
+        }
+
+        private void TipoCadastroPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PreencherCamps();
         }
     }
 

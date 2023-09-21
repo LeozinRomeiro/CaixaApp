@@ -23,8 +23,8 @@ namespace CaixaApp.Views
 
         private async void ZXingScannerView_OnScanResult(ZXing.Result result)
         {
-            // Atualize o BindingContext na thread principal
-            await Device.BeginInvokeOnMainThread(async () =>
+            //Atualize o BindingContext na thread principal
+            Device.BeginInvokeOnMainThread(async () =>
             {
                 resultCodigo.Text = result.Text;
                 CodigoBarras codigo = new CodigoBarras
