@@ -4,21 +4,38 @@
              x:Class="CaixaApp.Views.ListarPage">
     <ContentPage.Content>
         <StackLayout>
+            <StackLayout >
+                <Label Text="Selecione o tipo de cadastro:"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+                <StackLayout BackgroundColor="White">
+                    <Picker x:Name="TipoCadastroPicker" SelectedIndexChanged="TipoCadastroPicker_SelectedIndexChanged" SelectedItem="Colaborador" HorizontalTextAlignment="Center" TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Caixa</x:String>
+                            <x:String>Ferramenta</x:String>
+                            <x:String>Colaborador</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </StackLayout>
+            </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Entry x:Name="texteBuscado" Keyboard="Plain" Placeholder="Nome da caixa" HorizontalOptions="StartAndExpand"/>
-                <Button x:Name="buttonLocalizar" Text="Localizar" Clicked="buttonLocalizar_Clicked"/>
             </StackLayout>
-            <ListView x:Name="ListaFerramenta" HasUnevenRows="True" SeparatorColor="Red" Margin="15" ItemSelected="ListaFerramenta_ItemSelected">
+            <StackLayout>
+                <Label Text="A lista resultante da sua busca:" HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+            <ListView x:Name="ListaFerramenta" BackgroundColor="White" HasUnevenRows="True" SeparatorColor="Red" Margin="15" ItemSelected="ListaFerramenta_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout>
-                                <Label Text="{Binding Titulo,StringFormat='Título: {0}'}"/>
+                                <Label Text="{Binding Texto, StringFormat='{0}'}" TextColor="Black" FontSize="20" HorizontalOptions="CenterAndExpand" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button x:Name="buttonLocalizar" Text="Localizar" Clicked="buttonLocalizar_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

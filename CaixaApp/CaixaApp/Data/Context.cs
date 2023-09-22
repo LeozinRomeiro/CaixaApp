@@ -44,18 +44,38 @@ namespace CaixaApp.Data
                 throw;
             }
         }
-        public List<Ferramenta> LocalizarFerramentasNaCaixa(int id)
+        //public List<Ferramenta> LocalizarFerramentasNaCaixa(int id)
+        //{
+        //    try
+        //    {
+        //        Caixa caixa = con.Table<Caixa>().FirstOrDefault(x => x.Id == id);
+        //        if (caixa != null)
+        //        {
+        //            return con.Table<Ferramenta>().Where(x => x.IdCaixa == id).ToList();
+        //        }
+        //        else
+        //        {
+        //            return new List<Ferramenta>();
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+        public List<Colaborador> LocalizarColaboradores(string nome)
         {
+            List<Colaborador> lista = new List<Colaborador>();
             try
             {
-                Caixa caixa = con.Table<Caixa>().FirstOrDefault(x => x.Id == id);
-                if (caixa != null)
+                if (nome != null)
                 {
-                    return con.Table<Ferramenta>().Where(x => x.IdCaixa == id).ToList();
+                    lista = (con.Table<Colaborador>().Where(p => p.Nome.ToLower().Contains(nome.ToLower()))).ToList();
                 }
                 else
                 {
-                    return new List<Ferramenta>();
+                    lista = (from p in con.Table<Colaborador>() select p).ToList();
                 }
             }
             catch (Exception)
@@ -63,30 +83,53 @@ namespace CaixaApp.Data
 
                 throw;
             }
+            return lista;
         }
-        public Colaborador LocalizarColaborador(int id)
+        public List<Ferramenta> LocalizarFerramentas(string nome)
         {
+            List<Ferramenta> lista = new List<Ferramenta>();
             try
             {
-                return con.Table<Colaborador>().FirstOrDefault(x => x.Id == id);
+                if (nome != null)
+                {
+                    lista = (con.Table<Ferramenta>().Where(p => p.Nome.ToLower().Contains(nome.ToLower()))).ToList();
+                }
+                else
+                {
+                    lista = (from p in con.Table<Ferramenta>() select p).ToList();
+                }
             }
             catch (Exception)
             {
 
                 throw;
             }
+            return lista;
         }
-        public Caixa LocalizarCaixa(int id)
+        public List<Caixa> LocalizarCaixa(string nome)
         {
+            List<Caixa> lista = new List<Caixa>();
             try
             {
-                return con.Table<Caixa>().FirstOrDefault(x => x.Id == id);
+                if (nome != null)
+                {
+                    List<Colaborador> listaColaboradoes = LocalizarColaboradores(nome);
+                    foreach (var colaborador in listaColaboradoes)
+                    {
+                        lista.Add(con.Table<Caixa>().First(p => p.IdColaborador == colaborador.Id));
+                    }
+                }
+                else
+                {
+                    lista = (from p in con.Table<Caixa>() select p).ToList();
+                }
             }
             catch (Exception)
             {
 
                 throw;
             }
+            return lista;
         }
         //public List<Ferramenta> EncontrarFerramentas(int id)
         //{

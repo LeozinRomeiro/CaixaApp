@@ -23,7 +23,7 @@ namespace CaixaApp.Views
 
         public async void EscolherSelecionado()
         {
-            Selecionado = await DisplayActionSheet("Escolhar o cadastrado:", "Cancelar", null, "Caixa", "Ferramenta", "");
+            Selecionado = await DisplayActionSheet("Escolhar o cadastrado:", "Cancelar", null, "Caixa", "Ferramenta", "Colaborador");
             TipoCadastroPicker.SelectedItem = Selecionado;
             PreencherCamps();
         }
@@ -34,23 +34,28 @@ namespace CaixaApp.Views
             switch (Selecionado)
             {
                 case "Caixa":
-                    Camp1Entry.Placeholder = "Id";
-                    Camp2Entry.Placeholder = "IdColaborador";
-                    Camp3Entry.Placeholder = "Codigo";
+                    Camp1Entry.Placeholder = "Codigo";
+                    Camp2Entry.Placeholder = "Id";
+                    Camp3Entry.Placeholder = "IdColaborador";
                     Camp4Entry.Placeholder = "";
                     Camp5Entry.Placeholder = "";
                     Camp6Entry.Placeholder = "";
                     break;
                 case "Ferramenta":
-                    Camp1Entry.Placeholder = "Id";
+                    Camp1Entry.Placeholder = "Codigo";
+                    Camp2Entry.Placeholder = "Id";
                     Camp3Entry.Placeholder = "IdCaixa";
                     Camp4Entry.Placeholder = "Tipo";
                     Camp5Entry.Placeholder = "Nome";
                     Camp6Entry.Placeholder = "Quantidade";
-                    Camp2Entry.Placeholder = "Codigo";
                     break;
                 case "Colaborador":
-                    // Lógica de cadastro de colaborador
+                    Camp1Entry.Placeholder = "";
+                    Camp2Entry.Placeholder = "Id";
+                    Camp3Entry.Placeholder = "Nome";
+                    Camp4Entry.Placeholder = "Setor";
+                    Camp5Entry.Placeholder = "Cargo";
+                    Camp6Entry.Placeholder = "";
                     break;
                 default:
                     // Trate qualquer seleção inválida aqui
@@ -88,10 +93,15 @@ namespace CaixaApp.Views
                         context.Inserir(ferramenta);
                         break;
                     case "Colaborador":
-                        // Lógica de cadastro de colaborador
+                        Colaborador colaborador = new Colaborador();
+                        colaborador.Id = int.Parse(Camp2Entry.Text);
+                        colaborador.Nome = Camp3Entry.Text;
+                        colaborador.Setor = Camp4Entry.Text;
+                        colaborador.Cargo = Camp5Entry.Text;
+                        context.Inserir(colaborador);
                         break;
                     default:
-                        // Trate qualquer seleção inválida aqui
+                        await DisplayAlert("Erro", "Por favor selecione um tipo de cadastro!", "OK");
                         break;
                 }
                 await DisplayAlert("Resultado", Camp2Entry.Text + " inserido com sucesso!", "OK");
