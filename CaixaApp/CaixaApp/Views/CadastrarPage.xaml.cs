@@ -85,11 +85,12 @@ namespace CaixaApp.Views
                         break;
                     case "Ferramenta":
                         Ferramenta ferramenta = new Ferramenta();
-                        ferramenta.Id = int.Parse(Camp1Entry.Text);
-                        ferramenta.Codigo = Camp2Entry.Text;
-                        ferramenta.Tipo = Camp3Entry.Text;
-                        ferramenta.Nome = Camp4Entry.Text;
-                        ferramenta.Quantidade = int.Parse(Camp5Entry.Text);
+                        ferramenta.Codigo = Camp1Entry.Text;
+                        ferramenta.Id = int.Parse(Camp2Entry.Text);
+                        ferramenta.IdCaixa = int.Parse(Camp3Entry.Text);
+                        ferramenta.Tipo = Camp4Entry.Text;
+                        ferramenta.Nome = Camp5Entry.Text;
+                        ferramenta.Quantidade = int.Parse(Camp6Entry.Text);
                         context.Inserir(ferramenta);
                         break;
                     case "Colaborador":

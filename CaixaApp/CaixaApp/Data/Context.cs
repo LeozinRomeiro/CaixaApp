@@ -64,6 +64,48 @@ namespace CaixaApp.Data
         //        throw;
         //    }
         //}
+
+        public Ferramenta LocalizarCaixa(int id)
+        {
+            Ferramenta ferramenta = new Ferramenta();
+            try
+            {
+                return con.Table<Ferramenta>().FirstOrDefault(x => x.IdCaixa == id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public Ferramenta LocalizarFerramenta(int id)
+        {
+            Ferramenta ferramenta= new Ferramenta();
+            try
+            {
+                return con.Table<Ferramenta>().FirstOrDefault(x => x.Id == id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public Ferramenta LocalizarFerramenta(string codigo)
+        {
+            Ferramenta ferramenta = new Ferramenta();
+            try
+            {
+                return con.Table<Ferramenta>().FirstOrDefault(x => x.Codigo == codigo);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public List<Colaborador> LocalizarColaboradores(string nome)
         {
             List<Colaborador> lista = new List<Colaborador>();

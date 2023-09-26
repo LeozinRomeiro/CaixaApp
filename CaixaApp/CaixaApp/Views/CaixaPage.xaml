@@ -3,10 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CaixaApp.Views.CaixaPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="20" >
+            <StackLayout x:Name="stackLayoutCaixa" Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <Entry x:Name="codigo"/>
+                <Label Text="" FontSize="20"/>
+                <Label Text="" FontSize="20"/>
+            </StackLayout>
+            <Button Text="Ler caixa" Clicked="Button_Clicked"/>
+            <Button Text="Adicionar StackLayout" Clicked="OnAddStackLayoutClicked" />
+            <StackLayout x:Name="stackLayoutFerramenta" Orientation="Horizontal">
+                <StackLayout>
+                    <Image Source="ok" HorizontalOptions="Start"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+
+                    <Label x:Name="labelNome" Text="" FontSize="20"/>
+                    <Label x:Name="labelTipo" Text="" FontSize="20"/>
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
