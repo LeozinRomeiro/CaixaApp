@@ -16,16 +16,27 @@ namespace CaixaApp.Views
     {
         Context context = new Context(App.Path);
         static Ferramenta Caixa;
+        static List<Ferramenta> Ferramentas;
         public CaixaPage()
         {
             InitializeComponent();
         }
-        private void OnAddStackLayoutClicked(object sender, EventArgs e)
+        private async void OnAddStackLayoutClicked(object sender, EventArgs e)
         {
-            Button_Clicked(sender, e);
-
+            await Navigation.PushAsync(new LeitorPage(this));
+            codigo.SetBinding(Entry.TextProperty, new Binding("Codigo"));
+        }
+        private async void Button_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new LeitorPage(this));
+            codigo.SetBinding(Entry.TextProperty, new Binding("Codigo"));
+            Caixa = context.LocalizarFerramenta(codigo.Text);
+        }
+        public void AddStackLayoutClicked()
+        {
             Ferramenta ferramenta = new Ferramenta();
-            ferramenta = context.LocalizarCaixa(Caixa.Id);
+            string _codigo = codigo.ToString();
+            ferramenta = context.LocalizarFerramentaCodigo(codigo.ToString());
             var stackLayoutFerramenta = new StackLayout
             {
                 Orientation = StackOrientation.Horizontal,
@@ -56,13 +67,7 @@ namespace CaixaApp.Views
                 }
             };
             ((StackLayout)Content).Children.Add(stackLayoutFerramenta);
-        }
-
-        private async void Button_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new LeitorPage(this));
-            codigo.SetBinding(Entry.TextProperty, new Binding("Codigo"));
-            Caixa = context.LocalizarFerramenta(codigo.Text);
+            Ferramentas.Add(ferramenta);
         }
     }
 }
