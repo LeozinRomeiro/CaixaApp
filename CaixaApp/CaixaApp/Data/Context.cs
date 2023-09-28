@@ -117,6 +117,33 @@ namespace CaixaApp.Data
                 throw;
             }
         }
+        public Colaborador LocalizarColaborador(int id)
+        {
+            Colaborador ferramenta = new Colaborador ();
+            try
+            {
+                return con.Table<Colaborador >().FirstOrDefault(x => x.Id == id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public Colaborador LocalizarColaboradorCaixa(int id)
+        {
+            Colaborador ferramenta = new Colaborador();
+            try
+            {
+                return con.Table<Colaborador>().FirstOrDefault(x => x.IdCaixa == id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         public List<Colaborador> LocalizarColaboradores(string nome)
         {

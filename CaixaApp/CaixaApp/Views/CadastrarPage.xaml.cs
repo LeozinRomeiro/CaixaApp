@@ -140,13 +140,13 @@ namespace CaixaApp.Views
 
         private async void Leitor_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new LeitorPage(this));
+            await Navigation.PushAsync(new LeitorPage(OnCodeScanned));
             Camp1Entry.SetBinding(Entry.TextProperty, new Binding("Codigo"));
         }
 
         private void OnCodeScanned(string codigo)
         {
-            Camp1Entry= codigo.ToString();
+            Camp1Entry.Text= codigo.ToString();
         }
 
         private void TipoCadastroPicker_SelectedIndexChanged(object sender, EventArgs e)

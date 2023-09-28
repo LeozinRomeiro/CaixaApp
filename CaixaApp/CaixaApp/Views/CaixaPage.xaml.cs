@@ -14,6 +14,7 @@ namespace CaixaApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CaixaPage : ContentPage
     {
+        string CodigoLido;
         Context context = new Context(App.Path);
         static Ferramenta Caixa = new Ferramenta();
         static List<Ferramenta> Ferramentas = new List<Ferramenta>();
@@ -21,13 +22,18 @@ namespace CaixaApp.Views
         {
             InitializeComponent();
         }
+
+        private void OnCodeScanned(string codigo)
+        {
+            CodigoLido = codigo;
+        }
         private async void OnAddStackLayoutClicked(object sender, EventArgs e)
         {
-            string codigo = await LerCodigoAsync();
-            await DisplayAlert("erro", "nao chega aqui", "tes");
-            if (!string.IsNullOrEmpty(codigo))
+            await LerCodigoAsync();
+            if (!string.IsNullOrEmpty(CodigoLido))
             {
-                CriarStakyLauout(codigo);
+                await DisplayAlert("Opa", CodigoLido, "ok");
+                CriarStakyLauout(CodigoLido);
             }
             else
             {
@@ -38,11 +44,13 @@ namespace CaixaApp.Views
         {
             string codigo = await LerCodigoAsync();
             Caixa = context.LocalizarFerramenta(codigo);
+            labelCaixa.Text = Caixa.Nome;
+            labelColaborador.Text = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa)).Nome;
         }
 
         private async Task<string> LerCodigoAsync()
         {
-            await Navigation.PushAsync(new LeitorPage(this));
+            await Navigation.PushAsync(new LeitorPage(OnCodeScanned));
             CodigoBarras codigo = this.BindingContext as CodigoBarras;
 
             if (codigo != null && !string.IsNullOrEmpty(codigo.Codigo))
