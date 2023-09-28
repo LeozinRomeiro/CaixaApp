@@ -15,59 +15,99 @@ namespace CaixaApp.Views
     public partial class CaixaPage : ContentPage
     {
         Context context = new Context(App.Path);
-        static Ferramenta Caixa;
-        static List<Ferramenta> Ferramentas;
+        static Ferramenta Caixa = new Ferramenta();
+        static List<Ferramenta> Ferramentas = new List<Ferramenta>();
         public CaixaPage()
         {
             InitializeComponent();
         }
         private async void OnAddStackLayoutClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new LeitorPage(this));
-            codigo.SetBinding(Entry.TextProperty, new Binding("Codigo"));
+            string codigo = await LerCodigoAsync();
+            await DisplayAlert("erro", "nao chega aqui", "tes");
+            if (!string.IsNullOrEmpty(codigo))
+            {
+                CriarStakyLauout(codigo);
+            }
+            else
+            {
+                await DisplayAlert("Não encontrado", "Codigo de barras inavalido! por favor verifique se ele está correto", "Ok");
+            }
         }
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new LeitorPage(this));
-            codigo.SetBinding(Entry.TextProperty, new Binding("Codigo"));
-            Caixa = context.LocalizarFerramenta(codigo.Text);
+            string codigo = await LerCodigoAsync();
+            Caixa = context.LocalizarFerramenta(codigo);
         }
-        public void AddStackLayoutClicked()
+
+        private async Task<string> LerCodigoAsync()
         {
-            Ferramenta ferramenta = new Ferramenta();
-            string _codigo = codigo.ToString();
-            ferramenta = context.LocalizarFerramentaCodigo(codigo.ToString());
-            var stackLayoutFerramenta = new StackLayout
+            await Navigation.PushAsync(new LeitorPage(this));
+            CodigoBarras codigo = this.BindingContext as CodigoBarras;
+
+            if (codigo != null && !string.IsNullOrEmpty(codigo.Codigo))
             {
-                Orientation = StackOrientation.Horizontal,
-                Children =
+                return codigo.Codigo;
+            }
+
+            return string.Empty;
+        }
+
+        private void CriarStakyLauout(string codigo)
+        {
+            try
+            {
+                Ferramenta ferramenta = new Ferramenta();
+                ferramenta = context.LocalizarFerramentaCodigo(codigo);
+                if (ferramenta != null)
                 {
-                    new StackLayout
-                    {
-                        Children =
-                        {
-                            new Image
-                            {
-                                Source = "ok",
-                                HorizontalOptions = LayoutOptions.Start
-                            }
-                        }
-                    },
-                    new StackLayout
+                    var stackLayoutFerramenta = new StackLayout
                     {
                         Orientation = StackOrientation.Horizontal,
-                        VerticalOptions = LayoutOptions.CenterAndExpand,
-                        HorizontalOptions = LayoutOptions.CenterAndExpand,
                         Children =
                         {
-                            new Label {  Text = ferramenta.Nome, FontSize = 20 },
-                            new Label { Text = ferramenta.Tipo, FontSize = 20 }
+                            new StackLayout
+                            {
+                                Children =
+                                {
+                                    new Image
+                                    {
+                                        Source = "ok",
+                                        HorizontalOptions = LayoutOptions.Start
+                                    }
+                                }
+                            },
+                            new StackLayout
+                            {
+                                Orientation = StackOrientation.Horizontal,
+                                VerticalOptions = LayoutOptions.CenterAndExpand,
+                                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                                Children =
+                                {
+                                    new Label {  Text = ferramenta.Nome, FontSize = 20 },
+                                    new Label { Text = ferramenta.Tipo, FontSize = 20 }
+                                }
+                            }
                         }
+                    };
+                    var contentStackLayout = Content as StackLayout;
+                    if (contentStackLayout != null)
+                    {
+                        contentStackLayout.Children.Add(stackLayoutFerramenta);
                     }
+                    ((StackLayout)Content).Children.Add(stackLayoutFerramenta);
+                    Ferramentas.Add(ferramenta);
                 }
-            };
-            ((StackLayout)Content).Children.Add(stackLayoutFerramenta);
-            Ferramentas.Add(ferramenta);
+                else
+                {
+                    DisplayAlert("Não encontrado", "Codigo de barras não encontrado! por favor verifique se ele está cadastrada", "Ok");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

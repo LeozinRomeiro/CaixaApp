@@ -144,6 +144,11 @@ namespace CaixaApp.Views
             Camp1Entry.SetBinding(Entry.TextProperty, new Binding("Codigo"));
         }
 
+        private void OnCodeScanned(string codigo)
+        {
+            Camp1Entry= codigo.ToString();
+        }
+
         private void TipoCadastroPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             PreencherCamps();

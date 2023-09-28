@@ -14,27 +14,36 @@ namespace CaixaApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LeitorPage : ContentPage
     {
-        private ContentPage DestinoPage;
-        public LeitorPage(ContentPage page)
+        private Action<String> _onCodeScanned;
+        public LeitorPage(Action<String> OnCodeScanned)
         {
             InitializeComponent();
-            DestinoPage = page;
+            _onCodeScanned = OnCodeScanned;
         }
 
-        private async void ZXingScannerView_OnScanResult(ZXing.Result result)
+        //private void ZXingScannerView_OnScanResult(ZXing.Result result)
+        //{
+        //    //Atualize o BindingContext na thread principal
+        //    Device.BeginInvokeOnMainThread(async () =>
+        //    {
+        //        resultCodigo.Text = result.Text;
+        //        CodigoBarras codigo = new CodigoBarras
+        //        {
+        //            Codigo = result.Text,
+        //        };
+        //        DestinoPage.BindingContext = codigo;
+        //        await Navigation.PopAsync();
+        //    });
+        //}
+
+        private void ZXingScannerView_OnScanResult(ZXing.Result result)
         {
-            //Atualize o BindingContext na thread principal
             Device.BeginInvokeOnMainThread(async () =>
             {
-                resultCodigo.Text = result.Text;
-                CodigoBarras codigo = new CodigoBarras
-                {
-                    Codigo = result.Text,
-                };
-                DestinoPage.BindingContext = codigo;
+                string codigo = result.Text;
+                _onCodeScanned?.Invoke(codigo);
                 await Navigation.PopAsync();
             });
-
         }
 
         protected override void OnDisappearing()
