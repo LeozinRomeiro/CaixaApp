@@ -29,7 +29,16 @@
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout>
-                                <Label Text="{Binding Texto, StringFormat='{0}'}" TextColor="Black" FontSize="20" HorizontalOptions="CenterAndExpand" />
+                                <StackLayout x:Name="listaStackLayoutFerramenta" Orientation="Vertical" Padding="10">
+                                    <Label Text="{Binding Nome}" TextColor="Black" FontSize="20" />
+                                    <Label Text="{Binding Tipo}" TextColor="Black" FontSize="18" />
+                                    <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}" TextColor="Black" FontSize="18" />
+                                </StackLayout>
+                                <StackLayout x:Name="listaStackLayoutColaborado" Orientation="Vertical" Padding="10">
+                                    <Label Text="{Binding Nome}" TextColor="Black" FontSize="20" />
+                                    <Label Text="{Binding Setor}" TextColor="Black" FontSize="18" />
+                                    <Label Text="{Binding Cargo}" TextColor="Black" FontSize="18" />
+                                </StackLayout>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

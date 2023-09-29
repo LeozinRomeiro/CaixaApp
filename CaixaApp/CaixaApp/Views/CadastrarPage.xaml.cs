@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+
 namespace CaixaApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -21,9 +22,23 @@ namespace CaixaApp.Views
             EscolherSelecionado();
         }
 
+        public CadastrarPage(Ferramenta ferramenta)
+        {
+            InitializeComponent();
+            Selecionado = "Ferramenta";
+            TipoCadastroPicker.SelectedItem = Selecionado;
+            Camp1Entry.Text = ferramenta.Codigo;
+            Camp2Entry.Text = ferramenta.Id.ToString();
+            Camp3Entry.Text = ferramenta.IdCaixa.ToString();
+            Camp4Entry.Text = ferramenta.Tipo;
+            Camp5Entry.Text = ferramenta.Nome;
+            Camp6Entry.Text = ferramenta.Quantidade.ToString();
+            buttonSalvar.Text = "Atualizar";
+        }
+
         public async void EscolherSelecionado()
         {
-            Selecionado = await DisplayActionSheet("Escolhar o cadastrado:", "Cancelar", null, "Caixa", "Ferramenta", "Colaborador");
+            Selecionado = await DisplayActionSheet("Escolhar o cadastrado:", "Cancelar", null, "Ferramenta", "Colaborador");
             TipoCadastroPicker.SelectedItem = Selecionado;
             PreencherCamps();
         }
@@ -33,14 +48,6 @@ namespace CaixaApp.Views
             Selecionado = TipoCadastroPicker.SelectedItem.ToString();
             switch (Selecionado)
             {
-                case "Caixa":
-                    Camp1Entry.Placeholder = "Codigo";
-                    Camp2Entry.Placeholder = "Id";
-                    Camp3Entry.Placeholder = "IdColaborador";
-                    Camp4Entry.Placeholder = "";
-                    Camp5Entry.Placeholder = "";
-                    Camp6Entry.Placeholder = "";
-                    break;
                 case "Ferramenta":
                     Camp1Entry.Placeholder = "Codigo";
                     Camp2Entry.Placeholder = "Id";
@@ -76,13 +83,6 @@ namespace CaixaApp.Views
                 Selecionado = TipoCadastroPicker.SelectedItem.ToString();
                 switch (Selecionado)
                 {
-                    case "Caixa":
-                        Caixa caixa = new Caixa();
-                        caixa.Id = int.Parse(Camp1Entry.Text);
-                        caixa.IdColaborador = int.Parse(Camp2Entry.Text);
-                        caixa.Codigo = Camp3Entry.Text;
-                        context.Inserir(caixa);
-                        break;
                     case "Ferramenta":
                         Ferramenta ferramenta = new Ferramenta();
                         ferramenta.Codigo = Camp1Entry.Text;
@@ -92,14 +92,23 @@ namespace CaixaApp.Views
                         ferramenta.Nome = Camp5Entry.Text;
                         ferramenta.Quantidade = int.Parse(Camp6Entry.Text);
                         context.Inserir(ferramenta);
+                        if (buttonSalvar.Text=="Atualizar")
+                        {
+                            context.Atualizar(ferramenta);
+                        }
                         break;
                     case "Colaborador":
                         Colaborador colaborador = new Colaborador();
-                        colaborador.Id = int.Parse(Camp2Entry.Text);
+                        colaborador.Id = int.Parse(Camp1Entry.Text);
+                        colaborador.IdCaixa = int.Parse(Camp2Entry.Text);
                         colaborador.Nome = Camp3Entry.Text;
                         colaborador.Setor = Camp4Entry.Text;
                         colaborador.Cargo = Camp5Entry.Text;
                         context.Inserir(colaborador);
+                        if (buttonSalvar.Text == "Atualizar")
+                        {
+                            context.Atualizar(colaborador);
+                        }
                         break;
                     default:
                         await DisplayAlert("Erro", "Por favor selecione um tipo de cadastro!", "OK");

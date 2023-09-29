@@ -15,6 +15,7 @@ namespace CaixaApp.Views
     public partial class ListarPage : ContentPage
     {
         static string Selecionado;
+        Context context = new Context(App.Path);
         public ListarPage()
         {
             InitializeComponent();
@@ -22,7 +23,7 @@ namespace CaixaApp.Views
         }
         public async void EscolherSelecionado()
         {
-            Selecionado = await DisplayActionSheet("Escolhar o cadastrado:", "Cancelar", null, "Caixa", "Ferramenta", "Colaborador");
+            Selecionado = await DisplayActionSheet("Escolhar o cadastrado:", "Cancelar", null, "Ferramenta", "Colaborador");
             TipoCadastroPicker.SelectedItem = Selecionado;
         }
 
@@ -31,40 +32,58 @@ namespace CaixaApp.Views
             try
             {
                 string textoBuscado = texteBuscado.Text;
-                Context context = new Context(App.Path);
-                List<InformacoesListadas> informacoesListadas = new List<InformacoesListadas>();
                 switch (TipoCadastroPicker.SelectedItem.ToString())
                 {
-                    case "Caixa":
+                    //case "Ferramenta":
 
-                        break;
+                    //    List<Ferramenta> ferramentas= context.LocalizarFerramentas(textoBuscado);
+
+                    //    foreach (var ferramenta in ferramentas)
+                    //    {
+                    //        InformacoesListadas informacoes = new InformacoesListadas();
+                    //        informacoes.Texto = $"{ferramenta.Nome} {ferramenta.Tipo} {ferramenta.Quantidade} "; // Adicione todos os atributos que deseja exibir
+                    //        informacoesListadas.Add(informacoes);
+                    //    }
+                    //    break;
+                    //case "Colaborador":
+
+                    //    List<Colaborador> colaboradors = context.LocalizarColaboradores(textoBuscado);
+
+                    //    foreach (var colaborador in colaboradors)
+                    //    {
+                    //        InformacoesListadas informacoes = new InformacoesListadas();
+                    //        informacoes.Texto = $"{colaborador.Nome} {colaborador.Setor} {colaborador.Cargo} "; // Adicione todos os atributos que deseja exibir
+                    //        informacoesListadas.Add(informacoes);
+                    //    }
+                    //    break;
                     case "Ferramenta":
 
-                        List<Ferramenta> ferramentas= context.LocalizarFerramentas(textoBuscado);
-
-                        foreach (var ferramenta in ferramentas)
-                        {
-                            InformacoesListadas informacoes = new InformacoesListadas();
-                            informacoes.Texto = $"{ferramenta.Nome} {ferramenta.Tipo} {ferramenta.Quantidade} "; // Adicione todos os atributos que deseja exibir
-                            informacoesListadas.Add(informacoes);
-                        }
+                        List<FerramentaList> ferramentas= context.LocalizarFerramentas(textoBuscado);
+                        ListaFerramenta.ItemsSource= ferramentas;
+                        //foreach (var ferramenta in ferramentas)
+                        //{
+                        //    InformacoesListadas informacoes = new InformacoesListadas();
+                        //    informacoes.Texto = $"{ferramenta.Nome} {ferramenta.Tipo} {ferramenta.Quantidade} "; // Adicione todos os atributos que deseja exibir
+                        //    informacoesListadas.Add(informacoes);
+                        //}
                         break;
                     case "Colaborador":
 
-                        List<Colaborador> colaboradors = context.LocalizarColaboradores(textoBuscado);
+                        List<ColaboradorList> colaboradors = context.LocalizarColaboradores(textoBuscado);
+                        ListaFerramenta.ItemsSource = colaboradors;
+                        //List<Colaborador> colaboradors = context.LocalizarColaboradores(textoBuscado);
 
-                        foreach (var colaborador in colaboradors)
-                        {
-                            InformacoesListadas informacoes = new InformacoesListadas();
-                            informacoes.Texto = $"{colaborador.Nome} {colaborador.Setor} {colaborador.Cargo} "; // Adicione todos os atributos que deseja exibir
-                            informacoesListadas.Add(informacoes);
-                        }
+                        //foreach (var colaborador in colaboradors)
+                        //{
+                        //    InformacoesListadas informacoes = new InformacoesListadas();
+                        //    informacoes.Texto = $"{colaborador.Nome} {colaborador.Setor} {colaborador.Cargo} "; // Adicione todos os atributos que deseja exibir
+                        //    informacoesListadas.Add(informacoes);
+                        //}
                         break;
                     default:
                         // Trate qualquer seleção inválida aqui
                         break;
                 }
-                ListaFerramenta.ItemsSource = informacoesListadas;
             }
             catch (Exception e )
             {
@@ -83,7 +102,16 @@ namespace CaixaApp.Views
 
         private void ListaFerramenta_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            try
+            {
+                Ferramenta ferramenta = (Ferramenta)ListaFerramenta.SelectedItem;
+                new NavigationPage(new CadastrarPage(ferramenta));
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
         }
 
         private void TipoCadastroPicker_SelectedIndexChanged(object sender, EventArgs e)

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Xamarin.Forms;
@@ -18,7 +19,6 @@ namespace CaixaApp.Data
             con = new SQLiteConnection(path);
             con.CreateTable<Ferramenta>();
             con.CreateTable<Colaborador>();
-            con.CreateTable<Caixa>();
         }
         public void Inserir<Entidade>(Entidade entidade)
         {
@@ -32,11 +32,36 @@ namespace CaixaApp.Data
                 throw;
             }
         }
-        public void Excluir(int id)
+        public void Excluir<Entidade>(Entidade entidade)
         {
             try
             {
-                con.Table<Caixa>().Delete(e => e.Id == id);
+                con.Delete(entidade);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public void Atualizar<Entidade>(Entidade entidade)
+        {
+            try
+            {
+                con.Update(entidade);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public void DeleteDataBase()
+        {
+            try
+            {
+                con.Close();
+                File.Delete("dbCaixaApp.db3");
             }
             catch (Exception)
             {
@@ -145,18 +170,38 @@ namespace CaixaApp.Data
             }
         }
 
-        public List<Colaborador> LocalizarColaboradores(string nome)
+        public List<ColaboradorList> LocalizarColaboradores(string nome)
         {
             List<Colaborador> lista = new List<Colaborador>();
+            List<ColaboradorList> lista_= new List<ColaboradorList>();
             try
             {
                 if (nome != null)
                 {
                     lista = (con.Table<Colaborador>().Where(p => p.Nome.ToLower().Contains(nome.ToLower()))).ToList();
+                    foreach (var colaborador in lista)
+                    {
+                        ColaboradorList colaboradorList = new ColaboradorList
+                        {
+                            Nome = colaborador.Nome,
+                            Setor = colaborador.Setor,
+                            Cargo = colaborador.Cargo,
+                        };
+                    }
                 }
                 else
                 {
                     lista = (from p in con.Table<Colaborador>() select p).ToList();
+                    foreach (var colaborador in lista)
+                    {
+                        ColaboradorList colaboradorList = new ColaboradorList
+                        {
+                            Nome = colaborador.Nome,
+                            Setor = colaborador.Setor,
+                            Cargo = colaborador.Cargo,
+                        };
+                        lista_.Add(colaboradorList);
+                    }
                 }
             }
             catch (Exception)
@@ -164,45 +209,41 @@ namespace CaixaApp.Data
 
                 throw;
             }
-            return lista;
+            return lista_;
         }
-        public List<Ferramenta> LocalizarFerramentas(string nome)
+        public List<FerramentaList> LocalizarFerramentas(string nome)
         {
             List<Ferramenta> lista = new List<Ferramenta>();
+            List<FerramentaList> ferramentasListadas = new List<FerramentaList>();
             try
             {
                 if (nome != null)
                 {
                     lista = (con.Table<Ferramenta>().Where(p => p.Nome.ToLower().Contains(nome.ToLower()))).ToList();
-                }
-                else
-                {
-                    lista = (from p in con.Table<Ferramenta>() select p).ToList();
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return lista;
-        }
-        public List<Caixa> LocalizarCaixa(string nome)
-        {
-            List<Caixa> lista = new List<Caixa>();
-            try
-            {
-                if (nome != null)
-                {
-                    List<Colaborador> listaColaboradoes = LocalizarColaboradores(nome);
-                    foreach (var colaborador in listaColaboradoes)
+                    foreach (var ferramenta in lista)
                     {
-                        lista.Add(con.Table<Caixa>().First(p => p.IdColaborador == colaborador.Id));
+                        FerramentaList ferramentaList = new FerramentaList
+                        {
+                            Nome = ferramenta.Nome,
+                            Tipo = ferramenta.Tipo,
+                            Quantidade = ferramenta.Quantidade,
+                        };
+                        ferramentasListadas.Add(ferramentaList);
                     }
                 }
                 else
                 {
-                    lista = (from p in con.Table<Caixa>() select p).ToList();
+                    lista = (from p in con.Table<Ferramenta>() select p).ToList();
+                    foreach (var ferramenta in lista)
+                    {
+                        FerramentaList ferramentaList = new FerramentaList
+                        {
+                            Nome = ferramenta.Nome,
+                            Tipo = ferramenta.Tipo,
+                            Quantidade = ferramenta.Quantidade,
+                        };
+                        ferramentasListadas.Add(ferramentaList);
+                    }
                 }
             }
             catch (Exception)
@@ -210,8 +251,9 @@ namespace CaixaApp.Data
 
                 throw;
             }
-            return lista;
+            return ferramentasListadas;
         }
+        
         //public List<Ferramenta> EncontrarFerramentas(int id)
         //{
         //    List<Ferramenta> ferramentas = new List<Ferramenta>();
