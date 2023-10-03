@@ -170,80 +170,81 @@ namespace CaixaApp.Data
             }
         }
 
-        public List<ColaboradorList> LocalizarColaboradores(string nome)
+        //public List<ColaboradorList> LocalizarColaboradores(string nome)
+        //{
+        //    List<Colaborador> lista = new List<Colaborador>();
+        //    List<ColaboradorList> lista_= new List<ColaboradorList>();
+        //    try
+        //    {
+        //        if (nome != null)
+        //        {
+        //            lista = (con.Table<Colaborador>().Where(p => p.Nome.ToLower().Contains(nome.ToLower()))).ToList();
+        //            foreach (var colaborador in lista)
+        //            {
+        //                ColaboradorList colaboradorList = new ColaboradorList
+        //                {
+        //                    Nome = colaborador.Nome,
+        //                    Setor = colaborador.Setor,
+        //                    Cargo = colaborador.Cargo,
+        //                };
+        //            }
+        //        }
+        //        else
+        //        {
+        //            lista = (from p in con.Table<Colaborador>() select p).ToList();
+        //            foreach (var colaborador in lista)
+        //            {
+        //                ColaboradorList colaboradorList = new ColaboradorList
+        //                {
+        //                    Nome = colaborador.Nome,
+        //                    Setor = colaborador.Setor,
+        //                    Cargo = colaborador.Cargo,
+        //                };
+        //                lista_.Add(colaboradorList);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //    return lista_;
+        //}
+        public List<Colaborador> LocalizarColaboradores(string nome)
         {
             List<Colaborador> lista = new List<Colaborador>();
-            List<ColaboradorList> lista_= new List<ColaboradorList>();
             try
             {
                 if (nome != null)
                 {
                     lista = (con.Table<Colaborador>().Where(p => p.Nome.ToLower().Contains(nome.ToLower()))).ToList();
-                    foreach (var colaborador in lista)
-                    {
-                        ColaboradorList colaboradorList = new ColaboradorList
-                        {
-                            Nome = colaborador.Nome,
-                            Setor = colaborador.Setor,
-                            Cargo = colaborador.Cargo,
-                        };
-                    }
                 }
                 else
                 {
                     lista = (from p in con.Table<Colaborador>() select p).ToList();
-                    foreach (var colaborador in lista)
-                    {
-                        ColaboradorList colaboradorList = new ColaboradorList
-                        {
-                            Nome = colaborador.Nome,
-                            Setor = colaborador.Setor,
-                            Cargo = colaborador.Cargo,
-                        };
-                        lista_.Add(colaboradorList);
-                    }
                 }
+                
             }
             catch (Exception)
             {
 
                 throw;
             }
-            return lista_;
+            return lista;
         }
-        public List<FerramentaList> LocalizarFerramentas(string nome)
+        public List<Ferramenta> LocalizarFerramentas(string nome)
         {
             List<Ferramenta> lista = new List<Ferramenta>();
-            List<FerramentaList> ferramentasListadas = new List<FerramentaList>();
             try
             {
                 if (nome != null)
                 {
                     lista = (con.Table<Ferramenta>().Where(p => p.Nome.ToLower().Contains(nome.ToLower()))).ToList();
-                    foreach (var ferramenta in lista)
-                    {
-                        FerramentaList ferramentaList = new FerramentaList
-                        {
-                            Nome = ferramenta.Nome,
-                            Tipo = ferramenta.Tipo,
-                            Quantidade = ferramenta.Quantidade,
-                        };
-                        ferramentasListadas.Add(ferramentaList);
-                    }
                 }
                 else
                 {
                     lista = (from p in con.Table<Ferramenta>() select p).ToList();
-                    foreach (var ferramenta in lista)
-                    {
-                        FerramentaList ferramentaList = new FerramentaList
-                        {
-                            Nome = ferramenta.Nome,
-                            Tipo = ferramenta.Tipo,
-                            Quantidade = ferramenta.Quantidade,
-                        };
-                        ferramentasListadas.Add(ferramentaList);
-                    }
                 }
             }
             catch (Exception)
@@ -251,9 +252,51 @@ namespace CaixaApp.Data
 
                 throw;
             }
-            return ferramentasListadas;
+            return lista;
         }
-        
+        //public List<FerramentaList> LocalizarFerramentas(string nome)
+        //{
+        //    List<Ferramenta> lista = new List<Ferramenta>();
+        //    List<FerramentaList> ferramentasListadas = new List<FerramentaList>();
+        //    try
+        //    {
+        //        if (nome != null)
+        //        {
+        //            lista = (con.Table<Ferramenta>().Where(p => p.Nome.ToLower().Contains(nome.ToLower()))).ToList();
+        //            foreach (var ferramenta in lista)
+        //            {
+        //                FerramentaList ferramentaList = new FerramentaList
+        //                {
+        //                    Nome = ferramenta.Nome,
+        //                    Tipo = ferramenta.Tipo,
+        //                    Quantidade = ferramenta.Quantidade,
+        //                };
+        //                ferramentasListadas.Add(ferramentaList);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            lista = (from p in con.Table<Ferramenta>() select p).ToList();
+        //            foreach (var ferramenta in lista)
+        //            {
+        //                FerramentaList ferramentaList = new FerramentaList
+        //                {
+        //                    Nome = ferramenta.Nome,
+        //                    Tipo = ferramenta.Tipo,
+        //                    Quantidade = ferramenta.Quantidade,
+        //                };
+        //                ferramentasListadas.Add(ferramentaList);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //    return ferramentasListadas;
+        //}
+
         //public List<Ferramenta> EncontrarFerramentas(int id)
         //{
         //    List<Ferramenta> ferramentas = new List<Ferramenta>();

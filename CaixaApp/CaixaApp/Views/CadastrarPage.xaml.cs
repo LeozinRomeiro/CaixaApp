@@ -27,13 +27,34 @@ namespace CaixaApp.Views
             InitializeComponent();
             Selecionado = "Ferramenta";
             TipoCadastroPicker.SelectedItem = Selecionado;
+            PreencherCamps();
             Camp1Entry.Text = ferramenta.Codigo;
             Camp2Entry.Text = ferramenta.Id.ToString();
             Camp3Entry.Text = ferramenta.IdCaixa.ToString();
             Camp4Entry.Text = ferramenta.Tipo;
             Camp5Entry.Text = ferramenta.Nome;
             Camp6Entry.Text = ferramenta.Quantidade.ToString();
+            Camp1Entry.IsVisible = false;
+            Camp2Entry.IsVisible = false;
+            Camp3Entry.IsVisible = false;
             buttonSalvar.Text = "Atualizar";
+            buttonExcluir.IsVisible = true;
+        }
+
+        public CadastrarPage(Colaborador colaborador)
+        {
+            InitializeComponent();
+            TipoCadastroPicker.SelectedItem = "Colaborador";
+            PreencherCamps();
+            Camp1Entry.Text = colaborador.Id.ToString();
+            Camp2Entry.Text = colaborador.IdCaixa.ToString();
+            Camp3Entry.Text = colaborador.Nome;
+            Camp4Entry.Text = colaborador.Setor;
+            Camp5Entry.Text = colaborador.Cargo;
+            Camp1Entry.IsVisible = false;
+            Camp2Entry.IsVisible = false;
+            buttonSalvar.Text = "Atualizar";
+            buttonExcluir.IsVisible = true;
         }
 
         public async void EscolherSelecionado()
@@ -95,7 +116,10 @@ namespace CaixaApp.Views
                         if (buttonSalvar.Text=="Atualizar")
                         {
                             context.Atualizar(ferramenta);
+                            await DisplayAlert("Resultado", Camp2Entry.Text + " atualizado com sucesso!", "OK");
+                            break;
                         }
+                        await DisplayAlert("Resultado", Camp2Entry.Text + " inserido com sucesso!", "OK");
                         break;
                     case "Colaborador":
                         Colaborador colaborador = new Colaborador();
@@ -104,17 +128,19 @@ namespace CaixaApp.Views
                         colaborador.Nome = Camp3Entry.Text;
                         colaborador.Setor = Camp4Entry.Text;
                         colaborador.Cargo = Camp5Entry.Text;
-                        context.Inserir(colaborador);
                         if (buttonSalvar.Text == "Atualizar")
                         {
                             context.Atualizar(colaborador);
+                            await DisplayAlert("Resultado", Camp2Entry.Text + " atualizado com sucesso!", "OK");
+                            break;
                         }
+                        context.Inserir(colaborador);
+                        await DisplayAlert("Resultado", Camp2Entry.Text + " inserido com sucesso!", "OK");
                         break;
                     default:
                         await DisplayAlert("Erro", "Por favor selecione um tipo de cadastro!", "OK");
                         break;
                 }
-                await DisplayAlert("Resultado", Camp2Entry.Text + " inserido com sucesso!", "OK");
 
                 //if (buttonSalvar.Text == "Inserir")
                 //{
@@ -136,13 +162,23 @@ namespace CaixaApp.Views
 
         private async void buttonExcluir_Clicked(object sender, EventArgs e)
         {
-            var resp = await DisplayAlert("Excluir registro", "Deseja excluir a nota atual?", "Sim", "Não");
+            var resp = await DisplayAlert("Excluir registro", "Deseja excluir o cadastro atual?", "Sim", "Não");
             if (resp == true)
             {
-                Context context = new Context(App.DataName);
-                int id = Convert.ToInt32(Camp1Entry.Text);
-                context.Excluir(id);
-                await DisplayAlert("Sucesso", "Nota excluída com sucesso", "OK");
+                Context context = new Context(App.Path);
+                if (Selecionado== "Colaborador")
+                {
+                    int id = Convert.ToInt32(Camp1Entry.Text);
+                    Colaborador colaborador = context.LocalizarColaborador(id);
+                    context.Excluir(colaborador);
+                }
+                else
+                {
+                    int id = Convert.ToInt32(Camp2Entry.Text);
+                    Ferramenta colaborador = context.LocalizarFerramenta(id);
+                    context.Excluir(colaborador);
+                }
+                await DisplayAlert("Sucesso", "Cadastro excluído com sucesso", "OK");
                 await Navigation.PushAsync(new MainPage());
             }
         }

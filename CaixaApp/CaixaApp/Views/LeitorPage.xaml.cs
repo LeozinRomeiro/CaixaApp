@@ -36,7 +36,7 @@ namespace CaixaApp.Views
         //    });
         //}
 
-        private void ZXingScannerView_OnScanResult(ZXing.Result result)
+        private async void ZXingScannerView_OnScanResult(ZXing.Result result)
         {
             Device.BeginInvokeOnMainThread(async () =>
             {

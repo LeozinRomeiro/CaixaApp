@@ -11,7 +11,6 @@
                 <StackLayout BackgroundColor="White">
                     <Picker x:Name="TipoCadastroPicker" SelectedIndexChanged="TipoCadastroPicker_SelectedIndexChanged" SelectedItem="Colaborador" HorizontalTextAlignment="Center" TextColor="Black">
                         <Picker.Items>
-                            <x:String>Caixa</x:String>
                             <x:String>Ferramenta</x:String>
                             <x:String>Colaborador</x:String>
                         </Picker.Items>
@@ -24,21 +23,27 @@
             <StackLayout>
                 <Label Text="A lista resultante da sua busca:" HorizontalOptions="CenterAndExpand" />
             </StackLayout>
-            <ListView x:Name="ListaFerramenta" BackgroundColor="White" HasUnevenRows="True" SeparatorColor="Red" Margin="15" ItemSelected="ListaFerramenta_ItemSelected">
+            <ListView x:Name="ListaFerramenta" BackgroundColor="White" HasUnevenRows="True" SeparatorColor="Red" Margin="15" ItemSelected="ListaFerramenta_ItemSelected" IsVisible="false">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout>
-                                <StackLayout x:Name="listaStackLayoutFerramenta" Orientation="Vertical" Padding="10">
-                                    <Label Text="{Binding Nome}" TextColor="Black" FontSize="20" />
-                                    <Label Text="{Binding Tipo}" TextColor="Black" FontSize="18" />
-                                    <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}" TextColor="Black" FontSize="18" />
-                                </StackLayout>
-                                <StackLayout x:Name="listaStackLayoutColaborado" Orientation="Vertical" Padding="10">
-                                    <Label Text="{Binding Nome}" TextColor="Black" FontSize="20" />
-                                    <Label Text="{Binding Setor}" TextColor="Black" FontSize="18" />
-                                    <Label Text="{Binding Cargo}" TextColor="Black" FontSize="18" />
-                                </StackLayout>
+                            <StackLayout x:Name="listaStackLayoutFerramenta" Orientation="Vertical" Padding="10">
+                                <Label Text="{Binding Nome}" TextColor="Black" FontSize="20" />
+                                <Label Text="{Binding Tipo}" TextColor="Black" FontSize="18" />
+                                <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}" TextColor="Black" FontSize="18" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ListView x:Name="ListaColaborador" BackgroundColor="White" HasUnevenRows="True" SeparatorColor="Red" Margin="15" ItemSelected="ListaColaborador_ItemSelected" IsVisible="false">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout x:Name="listaStackLayoutColaborado" Orientation="Vertical" Padding="10">
+                                <Label Text="{Binding Nome}" TextColor="Black" FontSize="20" />
+                                <Label Text="{Binding Setor}" TextColor="Black" FontSize="18" />
+                                <Label Text="{Binding Cargo}" TextColor="Black" FontSize="18" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

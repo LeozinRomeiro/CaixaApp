@@ -58,7 +58,9 @@ namespace CaixaApp.Views
                     //    break;
                     case "Ferramenta":
 
-                        List<FerramentaList> ferramentas= context.LocalizarFerramentas(textoBuscado);
+                        List<Ferramenta> ferramentas= context.LocalizarFerramentas(textoBuscado);
+                        ListaFerramenta.IsVisible = true;
+                        ListaColaborador.IsVisible = false;
                         ListaFerramenta.ItemsSource= ferramentas;
                         //foreach (var ferramenta in ferramentas)
                         //{
@@ -69,8 +71,10 @@ namespace CaixaApp.Views
                         break;
                     case "Colaborador":
 
-                        List<ColaboradorList> colaboradors = context.LocalizarColaboradores(textoBuscado);
-                        ListaFerramenta.ItemsSource = colaboradors;
+                        List<Colaborador> colaboradors = context.LocalizarColaboradores(textoBuscado);
+                        ListaColaborador.IsVisible = true;
+                        ListaFerramenta.IsVisible = false;
+                        ListaColaborador.ItemsSource = colaboradors;
                         //List<Colaborador> colaboradors = context.LocalizarColaboradores(textoBuscado);
 
                         //foreach (var colaborador in colaboradors)
@@ -104,8 +108,12 @@ namespace CaixaApp.Views
         {
             try
             {
-                Ferramenta ferramenta = (Ferramenta)ListaFerramenta.SelectedItem;
-                new NavigationPage(new CadastrarPage(ferramenta));
+                if (e.SelectedItem == null)
+                    return;
+                if (e.SelectedItem is Ferramenta ferramenta)
+                {
+                    Navigation.PushAsync(new CadastrarPage(ferramenta));
+                }
             }
             catch (Exception)
             {
@@ -113,7 +121,23 @@ namespace CaixaApp.Views
                 throw;
             }
         }
+        private void ListaColaborador_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            try
+            {
+                if (e.SelectedItem == null)
+                    return;
+                if (e.SelectedItem is Colaborador colaborador)
+                {
+                    Navigation.PushAsync(new CadastrarPage(colaborador));
+                }
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
         private void TipoCadastroPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             PreencherTela();

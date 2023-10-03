@@ -33,23 +33,24 @@ namespace CaixaApp.Views
             if (!string.IsNullOrEmpty(CodigoLido))
             {
                 await DisplayAlert("Opa", CodigoLido, "ok");
-                CriarStakyLauout(CodigoLido);
-            }
-            else
-            {
-                await DisplayAlert("Não encontrado", "Codigo de barras inavalido! por favor verifique se ele está correto", "Ok");
+                await CriarStakyLauout(CodigoLido);
             }
         }
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            string codigo = await LerCodigoAsync();
-            Caixa = context.LocalizarFerramenta(codigo);
-            labelCaixa.Text = Caixa.Nome;
-            labelColaborador.Text = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa)).Nome;
+            await LerCodigoAsync();
+            if (!string.IsNullOrEmpty(CodigoLido))
+            {
+                await DisplayAlert("Opa", CodigoLido, "ok");
+                Caixa = context.LocalizarFerramenta(CodigoLido);
+                labelCaixa.Text = Caixa.Nome;
+                labelColaborador.Text = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa)).Nome;
+            }
         }
 
         private async Task<string> LerCodigoAsync()
         {
+            CodigoLido = string.Empty;
             await Navigation.PushAsync(new LeitorPage(OnCodeScanned));
             CodigoBarras codigo = this.BindingContext as CodigoBarras;
 
@@ -61,7 +62,7 @@ namespace CaixaApp.Views
             return string.Empty;
         }
 
-        private void CriarStakyLauout(string codigo)
+        private async Task CriarStakyLauout(string codigo)
         {
             try
             {
@@ -108,7 +109,7 @@ namespace CaixaApp.Views
                 }
                 else
                 {
-                    DisplayAlert("Não encontrado", "Codigo de barras não encontrado! por favor verifique se ele está cadastrada", "Ok");
+                    await DisplayAlert("Não encontrado", "Codigo de barras não encontrado! por favor verifique se ele está cadastrada", "Ok");
                 }
             }
             catch (Exception)

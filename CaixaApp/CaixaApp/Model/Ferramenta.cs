@@ -7,7 +7,7 @@ namespace CaixaApp.Model
 {
     public class Ferramenta
     {
-        [PrimaryKey, AutoIncrement] public int Id { get; set; } = 0;
+        [PrimaryKey, AutoIncrement] public int Id { get; set; }
         [NotNull] public string Codigo { get; set; }
         [NotNull] public int IdCaixa { get; set; }
         [NotNull] public string Tipo { get; set; }
