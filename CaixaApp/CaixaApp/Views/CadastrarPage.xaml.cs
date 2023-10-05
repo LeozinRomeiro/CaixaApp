@@ -27,17 +27,14 @@ namespace CaixaApp.Views
             InitializeComponent();
             Selecionado = "Ferramenta";
             TipoCadastroPicker.SelectedItem = Selecionado;
+            Camp1Entry.Text = ferramenta.Codigo.ToString();
+			Camp2Entry.Text = ferramenta.Nome;
+            Camp3Entry.Text = ferramenta.Tipo;
+            Camp4Entry.Text = ferramenta.Quantidade.ToString();
+            Camp5Entry.Text = ferramenta.Id.ToString();
+            Camp6Entry.Text = ferramenta.IdCaixa.ToString();
             PreencherCamps();
-            Camp1Entry.Text = ferramenta.Codigo;
-            Camp2Entry.Text = ferramenta.Id.ToString();
-            Camp3Entry.Text = ferramenta.IdCaixa.ToString();
-            Camp4Entry.Text = ferramenta.Tipo;
-            Camp5Entry.Text = ferramenta.Nome;
-            Camp6Entry.Text = ferramenta.Quantidade.ToString();
-            Camp1Entry.IsVisible = false;
-            Camp2Entry.IsVisible = false;
-            Camp3Entry.IsVisible = false;
-            buttonSalvar.Text = "Atualizar";
+			buttonSalvar.Text = "Atualizar";
             buttonExcluir.IsVisible = true;
         }
 
@@ -45,15 +42,14 @@ namespace CaixaApp.Views
         {
             InitializeComponent();
             TipoCadastroPicker.SelectedItem = "Colaborador";
-            PreencherCamps();
-            Camp1Entry.Text = colaborador.Id.ToString();
-            Camp2Entry.Text = colaborador.IdCaixa.ToString();
-            Camp3Entry.Text = colaborador.Nome;
-            Camp4Entry.Text = colaborador.Setor;
-            Camp5Entry.Text = colaborador.Cargo;
             Camp1Entry.IsVisible = false;
-            Camp2Entry.IsVisible = false;
-            buttonSalvar.Text = "Atualizar";
+            Camp2Entry.Text = colaborador.Nome;
+            Camp3Entry.Text = colaborador.Setor;
+            Camp4Entry.Text = colaborador.Cargo;
+            Camp5Entry.Text = colaborador.Id.ToString();
+            Camp6Entry.Text = colaborador.IdCaixa.ToString();
+            PreencherCamps();
+			buttonSalvar.Text = "Atualizar";
             buttonExcluir.IsVisible = true;
         }
 
@@ -67,23 +63,29 @@ namespace CaixaApp.Views
         public void PreencherCamps()
         {
             Selecionado = TipoCadastroPicker.SelectedItem.ToString();
-            switch (Selecionado)
+			Camp1Entry.IsVisible = true;
+			Camp2Entry.IsVisible = true;
+			Camp3Entry.IsVisible = true;
+			Camp4Entry.IsVisible = true;
+			Camp5Entry.IsVisible = true;
+			Camp6Entry.IsVisible = true;
+			switch (Selecionado)
             {
                 case "Ferramenta":
                     Camp1Entry.Placeholder = "Codigo";
-                    Camp2Entry.Placeholder = "Id";
-                    Camp3Entry.Placeholder = "IdCaixa";
-                    Camp4Entry.Placeholder = "Tipo";
-                    Camp5Entry.Placeholder = "Nome";
-                    Camp6Entry.Placeholder = "Quantidade";
-                    break;
+                    Camp2Entry.Placeholder = "Nome";
+                    Camp3Entry.Placeholder = "Tipo";
+                    Camp4Entry.Placeholder = "Quantidade";
+					Camp5Entry.IsVisible = false;
+					Camp6Entry.IsVisible = false;
+					break;
                 case "Colaborador":
-                    Camp1Entry.Placeholder = "";
-                    Camp2Entry.Placeholder = "Id";
-                    Camp3Entry.Placeholder = "Nome";
-                    Camp4Entry.Placeholder = "Setor";
-                    Camp5Entry.Placeholder = "Cargo";
-                    Camp6Entry.Placeholder = "";
+                    Camp1Entry.IsVisible = false;
+					Camp2Entry.Placeholder = "Nome";
+                    Camp3Entry.Placeholder = "Setor";
+                    Camp4Entry.Placeholder = "Cargo";
+                    Camp5Entry.IsVisible = false;
+                    Camp6Entry.IsVisible = false;
                     break;
                 default:
                     // Trate qualquer seleção inválida aqui
@@ -107,27 +109,25 @@ namespace CaixaApp.Views
                     case "Ferramenta":
                         Ferramenta ferramenta = new Ferramenta();
                         ferramenta.Codigo = Camp1Entry.Text;
-                        ferramenta.Id = int.Parse(Camp2Entry.Text);
-                        ferramenta.IdCaixa = int.Parse(Camp3Entry.Text);
-                        ferramenta.Tipo = Camp4Entry.Text;
-                        ferramenta.Nome = Camp5Entry.Text;
-                        ferramenta.Quantidade = int.Parse(Camp6Entry.Text);
-                        context.Inserir(ferramenta);
+                        ferramenta.Nome = Camp2Entry.Text;
+                        ferramenta.Tipo = Camp3Entry.Text;
+                        ferramenta.Quantidade = int.Parse(Camp4Entry.Text);
+                        ferramenta.Id = int.Parse(Camp5Entry.Text);
+						ferramenta.IdCaixa = int.Parse(Camp6Entry.Text);
                         if (buttonSalvar.Text=="Atualizar")
                         {
                             context.Atualizar(ferramenta);
                             await DisplayAlert("Resultado", Camp2Entry.Text + " atualizado com sucesso!", "OK");
                             break;
                         }
+						context.Inserir(ferramenta);
                         await DisplayAlert("Resultado", Camp2Entry.Text + " inserido com sucesso!", "OK");
                         break;
                     case "Colaborador":
                         Colaborador colaborador = new Colaborador();
-                        colaborador.Id = int.Parse(Camp1Entry.Text);
-                        colaborador.IdCaixa = int.Parse(Camp2Entry.Text);
-                        colaborador.Nome = Camp3Entry.Text;
-                        colaborador.Setor = Camp4Entry.Text;
-                        colaborador.Cargo = Camp5Entry.Text;
+                        colaborador.Nome = Camp2Entry.Text;
+                        colaborador.Setor = Camp3Entry.Text;
+                        colaborador.Cargo = Camp4Entry.Text;
                         if (buttonSalvar.Text == "Atualizar")
                         {
                             context.Atualizar(colaborador);
@@ -168,13 +168,13 @@ namespace CaixaApp.Views
                 Context context = new Context(App.Path);
                 if (Selecionado== "Colaborador")
                 {
-                    int id = Convert.ToInt32(Camp1Entry.Text);
+                    int id = Convert.ToInt32(Camp5Entry.Text);
                     Colaborador colaborador = context.LocalizarColaborador(id);
                     context.Excluir(colaborador);
                 }
                 else
                 {
-                    int id = Convert.ToInt32(Camp2Entry.Text);
+                    int id = Convert.ToInt32(Camp5Entry.Text);
                     Ferramenta colaborador = context.LocalizarFerramenta(id);
                     context.Excluir(colaborador);
                 }

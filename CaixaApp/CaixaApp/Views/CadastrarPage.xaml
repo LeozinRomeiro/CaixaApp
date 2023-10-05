@@ -12,7 +12,6 @@
                 <StackLayout BackgroundColor="White">
                     <Picker x:Name="TipoCadastroPicker" SelectedIndexChanged="TipoCadastroPicker_SelectedIndexChanged" SelectedItem="Colaborador" HorizontalTextAlignment="Center" TextColor="Black">
                         <Picker.Items>
-                            <x:String>Caixa</x:String>
                             <x:String>Ferramenta</x:String>
                             <x:String>Colaborador</x:String>
                         </Picker.Items>
