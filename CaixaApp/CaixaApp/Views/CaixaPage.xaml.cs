@@ -23,43 +23,49 @@ namespace CaixaApp.Views
             InitializeComponent();
         }
 
-        private void OnCodeScanned(string codigo)
+        private async void AdicionarStackLayoutClicked(object sender, EventArgs e)
         {
-            CodigoLido = codigo;
-        }
-        private async void OnAddStackLayoutClicked(object sender, EventArgs e)
-        {
-            await LerCodigoAsync();
+            CodigoLido = await LerCodigoAsync();
             if (!string.IsNullOrEmpty(CodigoLido))
             {
                 await DisplayAlert("Opa", CodigoLido, "ok");
                 await CriarStakyLauout(CodigoLido);
             }
         }
-        private async void Button_Clicked(object sender, EventArgs e)
+        private async void LerCaixaClicked(object sender, EventArgs e)
         {
-            await LerCodigoAsync();
+			CodigoLido = await LerCodigoAsync();
             if (!string.IsNullOrEmpty(CodigoLido))
             {
-                await DisplayAlert("Opa", CodigoLido, "ok");
+                await DisplayAlert("Certo", CodigoLido, "ok");
                 Caixa = context.LocalizarFerramenta(CodigoLido);
                 labelCaixa.Text = Caixa.Nome;
                 labelColaborador.Text = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa)).Nome;
             }
-        }
+		}
 
         private async Task<string> LerCodigoAsync()
         {
             CodigoLido = string.Empty;
-            await Navigation.PushAsync(new LeitorPage(OnCodeScanned));
-            CodigoBarras codigo = this.BindingContext as CodigoBarras;
-
-            if (codigo != null && !string.IsNullOrEmpty(codigo.Codigo))
-            {
-                return codigo.Codigo;
-            }
-
-            return string.Empty;
+			var leitorPage = new LeitorPage(OnCodeScanned);
+			leitorPage.Disappearing += async (sender, e) =>
+			{
+				if (!string.IsNullOrEmpty(CodigoLido))
+				{
+					await DisplayAlert("Certo", CodigoLido, "ok");
+					// Restante do código...
+				}
+				else
+				{
+					await DisplayAlert("Errado", CodigoLido, "ok");
+				}
+			};
+            await Navigation.PushAsync(leitorPage);
+            return CodigoLido;
+        }
+        private void OnCodeScanned(string codigo)
+        {
+            CodigoLido = codigo;
         }
 
         private async Task CriarStakyLauout(string codigo)

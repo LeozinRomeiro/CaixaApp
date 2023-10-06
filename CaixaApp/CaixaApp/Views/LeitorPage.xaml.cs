@@ -36,13 +36,13 @@ namespace CaixaApp.Views
         //    });
         //}
 
-        private async void ZXingScannerView_OnScanResult(ZXing.Result result)
+        private void ZXingScannerView_OnScanResult(ZXing.Result result)
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
                 string codigo = result.Text;
                 _onCodeScanned?.Invoke(codigo);
-                await Navigation.PopAsync();
+				await Navigation.PopAsync();
             });
         }
 

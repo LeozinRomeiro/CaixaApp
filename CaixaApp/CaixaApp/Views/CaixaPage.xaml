@@ -11,8 +11,8 @@
                 <Label Text="Colaborador: " FontSize="15"/>
                 <Label x:Name="labelColaborador" Text="" FontSize="15"/>
             </StackLayout>
-            <Button Text="Ler caixa" Clicked="Button_Clicked"/>
-            <Button Text="Adicionar Nova Ferramenta" Clicked="OnAddStackLayoutClicked" />
+            <Button Text="Ler caixa" Clicked="LerCaixaClicked"/>
+            <Button Text="Adicionar Nova Ferramenta" Clicked="AdicionarStackLayoutClicked" />
             <!--# stacklayout exemplo
             <StackLayout x:Name="stackLayoutFerramenta" Orientation="Horizontal">
                 <StackLayout>

@@ -128,6 +128,8 @@ namespace CaixaApp.Views
                         colaborador.Nome = Camp2Entry.Text;
                         colaborador.Setor = Camp3Entry.Text;
                         colaborador.Cargo = Camp4Entry.Text;
+                        colaborador.Id = int.Parse(Camp5Entry.Text);
+                        colaborador.IdCaixa = int.Parse(Camp6Entry.Text);
                         if (buttonSalvar.Text == "Atualizar")
                         {
                             context.Atualizar(colaborador);
