@@ -25,45 +25,61 @@ namespace CaixaApp.Views
 
         private async void AdicionarStackLayoutClicked(object sender, EventArgs e)
         {
-            CodigoLido = await LerCodigoAsync();
-            if (!string.IsNullOrEmpty(CodigoLido))
+			await LerCodigoFerramentaAsync();
+            if (!string.IsNullOrEmpty(Caixa.Codigo))
             {
-                await DisplayAlert("Opa", CodigoLido, "ok");
-                await CriarStakyLauout(CodigoLido);
+                await DisplayAlert("Opa", Caixa.Codigo, "ok");
+                await CriarStakyLauout(Caixa.Codigo);
             }
         }
         private async void LerCaixaClicked(object sender, EventArgs e)
         {
-			CodigoLido = await LerCodigoAsync();
-            if (!string.IsNullOrEmpty(CodigoLido))
-            {
-                await DisplayAlert("Certo", CodigoLido, "ok");
-                Caixa = context.LocalizarFerramenta(CodigoLido);
-                labelCaixa.Text = Caixa.Nome;
-                labelColaborador.Text = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa)).Nome;
-            }
+            await LerCodigoCaixaAsync();
 		}
 
-        private async Task<string> LerCodigoAsync()
+        private async Task DeterminarCaixa(string codigoLido)
         {
-            CodigoLido = string.Empty;
+			Caixa = context.LocalizarFerramenta(codigoLido);
+			labelColaborador.Text = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa)).Nome;
+        }
+
+        private async Task LerCodigoCaixaAsync()
+        {
+            var leitorPage = new LeitorPage(OnCodeScanned);
+			Caixa.Codigo = CodigoLido;
+			leitorPage.Disappearing += async (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(CodigoLido))
+                {
+                    await DeterminarCaixa(CodigoLido);
+                }
+                else
+                {
+                    await DisplayAlert("Errado", "Codigo invalido", "ok");
+                }
+            };
+            await Navigation.PushAsync(leitorPage);
+        }
+
+		private async Task LerCodigoFerramentaAsync()
+		{
 			var leitorPage = new LeitorPage(OnCodeScanned);
+            Caixa.Codigo = CodigoLido;
 			leitorPage.Disappearing += async (sender, e) =>
 			{
-				if (!string.IsNullOrEmpty(CodigoLido))
+				if (!string.IsNullOrEmpty(Caixa.Codigo))
 				{
-					await DisplayAlert("Certo", CodigoLido, "ok");
-					// Restante do código...
+					await DeterminarCaixa(Caixa.Codigo);
 				}
 				else
 				{
-					await DisplayAlert("Errado", CodigoLido, "ok");
+					await DisplayAlert("Errado", "Codigo invalido", "ok");
 				}
 			};
-            await Navigation.PushAsync(leitorPage);
-            return CodigoLido;
-        }
-        private void OnCodeScanned(string codigo)
+			await Navigation.PushAsync(leitorPage);
+		}
+
+		private void OnCodeScanned(string codigo)
         {
             CodigoLido = codigo;
         }
