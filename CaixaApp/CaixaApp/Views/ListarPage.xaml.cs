@@ -20,6 +20,7 @@ namespace CaixaApp.Views
         {
             InitializeComponent();
             EscolherSelecionado();
+            stackLayoutTipoCadastro.IsVisible = true;
         }
 		private Action<Colaborador> _definirColaborador;
 		public ListarPage(Action<Colaborador> DefinirColaborador)
@@ -29,7 +30,7 @@ namespace CaixaApp.Views
             TipoCadastroPicker.SelectedItem = Selecionado;
             PreencherTela();
             _definirColaborador = DefinirColaborador;
-			stackLayoutTipoCadastro.IsVisible = true;
+			stackLayoutTipoCadastro.IsVisible = false;
 		}
 		public async void EscolherSelecionado()
         {
@@ -138,7 +139,7 @@ namespace CaixaApp.Views
                     return;
                 if (e.SelectedItem is Colaborador colaborador)
                 {
-                    if (!stackLayoutTipoCadastro.IsVisible==true)
+                    if ( !(Navigation.PopAsync() is CaixaPage))
                     {
                         Navigation.PushAsync(new CadastrarPage(colaborador));
                     }

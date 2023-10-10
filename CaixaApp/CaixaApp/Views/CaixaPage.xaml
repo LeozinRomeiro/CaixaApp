@@ -21,7 +21,7 @@
                 </StackLayout>
             </StackLayout>-->
             <StackLayout VerticalOptions="End">
-                <Button Text="Ler caixa" Clicked="LerCaixaClicked"/>
+                <Button x:Name="buttonCaixa" Text="Apontar caixa" Clicked="LerCaixaClicked"/>
                 <Button Text="Adicionar Nova Ferramenta" Clicked="AdicionarStackLayoutClicked" />
                 <Button x:Name="buttonFinalizar" Text="Salvar seleção" Clicked="buttonFinalizar_Clicked"/>
             </StackLayout>

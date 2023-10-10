@@ -36,31 +36,34 @@ namespace CaixaApp.Views
             while (Processo==null)
             {
                 Processo = await DisplayActionSheet("Escolhar o cadastrado:", "Cancelar", null, "Montar caixa", "Verificar caixa");
-			    if (Processo == "Montar caixa")
-			    {
-				    await Navigation.PushAsync(new ListarPage(DefinirColaborador));
-			    }
-                else
-                {
-                    //if (await DisplayAlert("Verificar caixa", "Por favor leia o QRcode da caixa do funcionario...", "Abrir leitor", "Cancelar"))
-                    //{
-					//}
-					await LerCodigoCaixaAsync();
-				    //if (Caixa.Codigo != null)
-				    //         {
-				    //             await LerCodigoCaixaAsync();
-				    //         }
-				    //         else
-				    //         {
-				    //             bool resposta = await DisplayAlert("Substituir", "O dono da caixa já foi selecionado, quer alterar?", "Sim", "Não");
-				    //             if (resposta)
-				    //             {
-				    //		await LerCodigoCaixaAsync();
-				    //	}
-				    //         }
-			    }
             }
-		}
+			if (Processo == "Montar caixa")
+			{
+				await Navigation.PushAsync(new ListarPage(DefinirColaborador));
+                buttonCaixa.BackgroundColor = Color.Green;
+                buttonCaixa.TextColor = Color.White;
+            }
+            else
+            {
+                buttonCaixa.BackgroundColor = Color.Green;
+                buttonCaixa.TextColor = Color.White;
+                //if (await DisplayAlert("Verificar caixa", "Por favor leia o QRcode da caixa do funcionario...", "Abrir leitor", "Cancelar"))
+                //{
+                //}
+                //if (Caixa.Codigo != null)
+                //         {
+                //             await LerCodigoCaixaAsync();
+                //         }
+                //         else
+                //         {
+                //             bool resposta = await DisplayAlert("Substituir", "O dono da caixa já foi selecionado, quer alterar?", "Sim", "Não");
+                //             if (resposta)
+                //             {
+                //		await LerCodigoCaixaAsync();
+                //	}
+                //         }
+            }
+        }
 		private async void AdicionarStackLayoutClicked(object sender, EventArgs e)
         {
 			await LerCodigoFerramentaAsync();
@@ -68,7 +71,7 @@ namespace CaixaApp.Views
         private async void LerCaixaClicked(object sender, EventArgs e)
         {
 			await LerCodigoCaixaAsync();
-			
+            buttonCaixa.IsVisible = false;
 		}
 
         private async Task LerCodigoCaixaAsync()
