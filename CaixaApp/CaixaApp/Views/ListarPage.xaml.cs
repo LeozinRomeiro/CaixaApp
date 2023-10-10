@@ -16,7 +16,9 @@ namespace CaixaApp.Views
     {
         static string Selecionado;
         Context context = new Context(App.Path);
-        public ListarPage()
+        int teste;
+
+		public ListarPage()
         {
             InitializeComponent();
             EscolherSelecionado();
@@ -28,6 +30,7 @@ namespace CaixaApp.Views
 			InitializeComponent();
             Selecionado = "Colaborador";
             TipoCadastroPicker.SelectedItem = Selecionado;
+            teste = 1;
             PreencherTela();
             _definirColaborador = DefinirColaborador;
 			stackLayoutTipoCadastro.IsVisible = false;
@@ -139,14 +142,14 @@ namespace CaixaApp.Views
                     return;
                 if (e.SelectedItem is Colaborador colaborador)
                 {
-                    if ( !(Navigation.PopAsync() is CaixaPage))
-                    {
-                        Navigation.PushAsync(new CadastrarPage(colaborador));
-                    }
-                    else
+                    if (teste==1)
                     {
                         _definirColaborador.Invoke(colaborador);
 					    Navigation.PopAsync();
+                    }
+                    else
+                    {
+                        Navigation.PushAsync(new CadastrarPage(colaborador));
                     }
 				}
 			}

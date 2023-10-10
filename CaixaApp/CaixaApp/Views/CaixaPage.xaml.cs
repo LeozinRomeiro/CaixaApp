@@ -22,7 +22,8 @@ namespace CaixaApp.Views
         static Ferramenta Caixa = new Ferramenta();
         static Colaborador colaborador = new Colaborador();
         static List<Ferramenta> ferramentas = new List<Ferramenta>();
-        public CaixaPage()
+		static List<Ferramenta> ferramentasCaixa = new List<Ferramenta>();
+		public CaixaPage()
         {
             InitializeComponent();
             EscolherProcesso();
@@ -102,15 +103,26 @@ namespace CaixaApp.Views
 			{
 				if (!string.IsNullOrEmpty(CodigoLido))
 				{
-					await CriarStakyLauout(CodigoLido);
-					ferramentas.Add(context.LocalizarFerramenta(CodigoLido));
-					CodigoLido = string.Empty;
+                    if (!VerificarRepeticao(CodigoLido))
+                    {
+                        if (CodigoLido!=Caixa.Codigo.ToString())
+                        {
+						    await CriarStakyLauout(CodigoLido);
+						    ferramentas.Add(context.LocalizarFerramenta(CodigoLido));
+                        }
+                        else
+                        {
+                            await DisplayAlert("Já foi", "A caixa já foi apontada...", "ok");
+                        }
+                    }
+					await DisplayAlert("Já foi", "Essa ferramenta já foi apontada...", "ok");
 				}
 				else
 				{
 					await DisplayAlert("Errado", "Codigo invalido", "ok");
 				}
 			};
+			CodigoLido = string.Empty;
 			await Navigation.PushAsync(leitorPage);
 		}
 
@@ -129,6 +141,22 @@ namespace CaixaApp.Views
             colaborador.IdCaixa = Caixa.Id;
             colaborador = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa));
             labelColaborador.Text = colaborador.Nome;
+        }
+        private bool VerificarRepeticao(string codigoLido)
+        {
+            foreach (var ferramenta in ferramentas)
+            {
+                if(ferramenta.Codigo == codigoLido)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void BuscarFerramentasCaixa(Ferramenta caixa)
+        {
+            ferramentasCaixa = context.LocalizarFerramentasNaCaixa(caixa);
         }
 
         private async Task CriarStakyLauout(string codigo)
@@ -201,6 +229,32 @@ namespace CaixaApp.Views
                             context.Atualizar(ferramenta);
                         }
                         context.Atualizar(colaborador);
+                    }
+                    else
+                    {
+                        foreach (var ferramentaEsperada in ferramentasCaixa)
+                        {
+                            foreach (var ferramenta in ferramentas)
+                            {
+                                if (ferramentaEsperada.Id == ferramenta.Id)
+                                {
+                                    ferramentasCaixa.Remove(ferramentaEsperada);
+                                }
+                            }
+                        }
+                        if(ferramentasCaixa.Count == 0)
+                        {
+                            await DisplayAlert("Sucesso", "Todas as ferramentas estão presentes!", "Concluir");
+                        }
+                        else
+                        {
+                            string Faltantes = string.Empty;
+							foreach (var ferramentaFaltante in ferramentasCaixa)
+                            {
+                                Faltantes += ferramentaFaltante.Nome + "/n";
+                            }
+							await DisplayAlert("Perai", "As seguintes ferramentas estão faltando...\n"+Faltantes, "Concluir");
+						}
                     }
                 }
             }
