@@ -1,16 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CaixaApp.MainPage">
+             x:Class="CaixaApp.MainPage" BackgroundColor="#f0f0f0">
 
-    <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="Welcome to Caixa de ferramentas!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+    <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Padding="20">
+        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="10">
+            <Label Text="Bem-vindo ao controle de ferramentas!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
         </Frame>
-        <Button Text="Cadastrar" x:Name="buttonCadastrar" Clicked="buttonCadastrar_Clicked"/>
-        <Button Text="Listar todos" x:Name="buttonListar" Clicked="buttonListar_Clicked"/>
-        <Button Text="Ver caixa" x:Name="buttonVer" Clicked="buttonVer_Clicked"/>
-        <ImageButton Source="Leitor" Background="Black" x:Name="ImageButtonLeitor" Clicked="ImageButtonLeitor_Clicked" />
+
+        <Button Text="Cadastrar" x:Name="buttonCadastrar" Clicked="buttonCadastrar_Clicked" BackgroundColor="#4682B4" TextColor="White" CornerRadius="10" Margin="0,10,0,0"/>
+        <Button Text="Listar todos" x:Name="buttonListar" Clicked="buttonListar_Clicked" BackgroundColor="#6A5ACD" TextColor="White" CornerRadius="10" Margin="0,10,0,0"/>
+        <Button Text="Ver caixa" x:Name="buttonVer" Clicked="buttonVer_Clicked" BackgroundColor="#000080" TextColor="White" CornerRadius="10" Margin="0,10,0,0"/>
+
+        <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+            <ImageButton Source="Leitor" Background="Transparent" BackgroundColor="Transparent" x:Name="ImageButtonLeitor" Clicked="ImageButtonLeitor_Clicked" HeightRequest="100" WidthRequest="75"/>
+            <Label Text="Toque para acessar o leitor e verificar a caixa rapidamente" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="Black" FontSize="16" Margin="0,10,0,0"/>
+        </StackLayout>
     </StackLayout>
 
 </ContentPage>
