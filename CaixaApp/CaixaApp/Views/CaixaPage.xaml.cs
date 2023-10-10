@@ -85,8 +85,8 @@ namespace CaixaApp.Views
                 {
 					Caixa.Codigo = CodigoLido;
 					await DefinirCaixa(Caixa.Codigo);
-			        CodigoLido = string.Empty;
-                }
+                    BuscarFerramentasCaixa(Caixa);
+				}
                 else
                 {
                     await DisplayAlert("Errado", "Codigo invalido", "ok");
@@ -115,14 +115,16 @@ namespace CaixaApp.Views
                             await DisplayAlert("Já foi", "A caixa já foi apontada...", "ok");
                         }
                     }
-					await DisplayAlert("Já foi", "Essa ferramenta já foi apontada...", "ok");
+                    else
+                    {
+					    await DisplayAlert("Já foi", "Essa ferramenta já foi apontada...", "ok");
+                    }
 				}
 				else
 				{
 					await DisplayAlert("Errado", "Codigo invalido", "ok");
 				}
 			};
-			CodigoLido = string.Empty;
 			await Navigation.PushAsync(leitorPage);
 		}
 
@@ -219,9 +221,9 @@ namespace CaixaApp.Views
 		{
             try
             {
-				if (await DisplayAlert("Confirmação", "Tem certeza que deseja finalizar?", "Sim", "Não"))
+                if (await DisplayAlert("Confirmação", "Tem certeza que deseja finalizar?", "Sim", "Não"))
                 {
-                    if (Processo=="Montar caixa")
+                    if (Processo == "Montar caixa")
                     {
                         foreach (var ferramenta in ferramentas)
                         {
@@ -229,6 +231,7 @@ namespace CaixaApp.Views
                             context.Atualizar(ferramenta);
                         }
                         context.Atualizar(colaborador);
+                        await DisplayAlert("Sucesso", "Sua caixa foi montada com sucesso!!", "Concluir");
                     }
                     else
                     {
@@ -242,23 +245,24 @@ namespace CaixaApp.Views
                                 }
                             }
                         }
-                        if(ferramentasCaixa.Count == 0)
+                        if (ferramentasCaixa.Count == 0)
                         {
                             await DisplayAlert("Sucesso", "Todas as ferramentas estão presentes!", "Concluir");
                         }
                         else
                         {
                             string Faltantes = string.Empty;
-							foreach (var ferramentaFaltante in ferramentasCaixa)
+                            foreach (var ferramentaFaltante in ferramentasCaixa)
                             {
-                                Faltantes += ferramentaFaltante.Nome + "/n";
+                                Faltantes += ferramentaFaltante.Nome + "\n";
                             }
-							await DisplayAlert("Perai", "As seguintes ferramentas estão faltando...\n"+Faltantes, "Concluir");
-						}
+                            await DisplayAlert("Perai", "As seguintes ferramentas estão faltando...\n" + Faltantes, "Concluir");
+                        }
                     }
                 }
-            }
-            catch (Exception)
+				await Navigation.PushAsync(new Views.CaixaPage());
+			}
+			catch (Exception)
             {
                 throw;
             }
