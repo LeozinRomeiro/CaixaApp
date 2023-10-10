@@ -12,6 +12,6 @@ namespace CaixaApp.Model
         [NotNull] public string Tipo { get; set; }
         [NotNull] public int Quantidade { get; set; }
         [PrimaryKey, AutoIncrement] public int Id { get; set; }
-        public int IdCaixa { get; set; }
+        public int IdCaixa { get; set; } = 0;
     }
 }

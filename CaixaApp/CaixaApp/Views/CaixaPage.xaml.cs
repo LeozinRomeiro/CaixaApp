@@ -2,12 +2,14 @@
 using CaixaApp.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using ZXing.Datamatrix.Encoder;
 
 namespace CaixaApp.Views
 {
@@ -15,61 +17,91 @@ namespace CaixaApp.Views
     public partial class CaixaPage : ContentPage
     {
         string CodigoLido;
+        string Processo;
         Context context = new Context(App.Path);
         static Ferramenta Caixa = new Ferramenta();
-        static List<Ferramenta> Ferramentas = new List<Ferramenta>();
+        static Colaborador colaborador = new Colaborador();
+        static List<Ferramenta> ferramentas = new List<Ferramenta>();
         public CaixaPage()
         {
             InitializeComponent();
+            EscolherProcesso();
         }
-
-        private async void AdicionarStackLayoutClicked(object sender, EventArgs e)
+        public CaixaPage(string processo)
+        {
+            Processo = processo;
+        }
+        public async void EscolherProcesso()
+		{
+            while (Processo==null)
+            {
+                Processo = await DisplayActionSheet("Escolhar o cadastrado:", "Cancelar", null, "Montar caixa", "Verificar caixa");
+			    if (Processo == "Montar caixa")
+			    {
+				    await Navigation.PushAsync(new ListarPage(DefinirColaborador));
+			    }
+                else
+                {
+                    //if (await DisplayAlert("Verificar caixa", "Por favor leia o QRcode da caixa do funcionario...", "Abrir leitor", "Cancelar"))
+                    //{
+					//}
+					await LerCodigoCaixaAsync();
+				    //if (Caixa.Codigo != null)
+				    //         {
+				    //             await LerCodigoCaixaAsync();
+				    //         }
+				    //         else
+				    //         {
+				    //             bool resposta = await DisplayAlert("Substituir", "O dono da caixa já foi selecionado, quer alterar?", "Sim", "Não");
+				    //             if (resposta)
+				    //             {
+				    //		await LerCodigoCaixaAsync();
+				    //	}
+				    //         }
+			    }
+            }
+		}
+		private async void AdicionarStackLayoutClicked(object sender, EventArgs e)
         {
 			await LerCodigoFerramentaAsync();
-            if (!string.IsNullOrEmpty(Caixa.Codigo))
-            {
-                await DisplayAlert("Opa", Caixa.Codigo, "ok");
-                await CriarStakyLauout(Caixa.Codigo);
-            }
         }
         private async void LerCaixaClicked(object sender, EventArgs e)
         {
-            await LerCodigoCaixaAsync();
+			await LerCodigoCaixaAsync();
+			
 		}
-
-        private async Task DeterminarCaixa(string codigoLido)
-        {
-			Caixa = context.LocalizarFerramenta(codigoLido);
-			labelColaborador.Text = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa)).Nome;
-        }
 
         private async Task LerCodigoCaixaAsync()
         {
-            var leitorPage = new LeitorPage(OnCodeScanned);
-			Caixa.Codigo = CodigoLido;
+			CodigoLido = string.Empty;
+			var leitorPage = new LeitorPage(OnCodeScanned);
 			leitorPage.Disappearing += async (sender, e) =>
             {
                 if (!string.IsNullOrEmpty(CodigoLido))
                 {
-                    await DeterminarCaixa(CodigoLido);
+					Caixa.Codigo = CodigoLido;
+					await DefinirCaixa(Caixa.Codigo);
+			        CodigoLido = string.Empty;
                 }
                 else
                 {
                     await DisplayAlert("Errado", "Codigo invalido", "ok");
                 }
             };
-            await Navigation.PushAsync(leitorPage);
+			await Navigation.PushAsync(leitorPage);
         }
 
 		private async Task LerCodigoFerramentaAsync()
 		{
+			CodigoLido = string.Empty;
 			var leitorPage = new LeitorPage(OnCodeScanned);
-            Caixa.Codigo = CodigoLido;
 			leitorPage.Disappearing += async (sender, e) =>
 			{
-				if (!string.IsNullOrEmpty(Caixa.Codigo))
+				if (!string.IsNullOrEmpty(CodigoLido))
 				{
-					await DeterminarCaixa(Caixa.Codigo);
+					await CriarStakyLauout(CodigoLido);
+					ferramentas.Add(context.LocalizarFerramenta(CodigoLido));
+					CodigoLido = string.Empty;
 				}
 				else
 				{
@@ -82,6 +114,18 @@ namespace CaixaApp.Views
 		private void OnCodeScanned(string codigo)
         {
             CodigoLido = codigo;
+        }
+        private void DefinirColaborador(Colaborador _colaborador)
+        {
+            colaborador = _colaborador;
+            labelColaborador.Text = colaborador.Nome;
+        }
+        private async Task DefinirCaixa(string codigoLido)
+        {
+			Caixa = context.LocalizarFerramenta(codigoLido);
+            colaborador.IdCaixa = Caixa.Id;
+            colaborador = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa));
+            labelColaborador.Text = colaborador.Nome;
         }
 
         private async Task CriarStakyLauout(string codigo)
@@ -115,8 +159,8 @@ namespace CaixaApp.Views
                                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                                 Children =
                                 {
-                                    new Label {  Text = ferramenta.Nome, FontSize = 20 },
-                                    new Label { Text = ferramenta.Tipo, FontSize = 20 }
+                                    new Label {  Text = ferramenta.Nome, FontSize = 18 },
+                                    new Label { Text = ferramenta.Tipo, FontSize = 18 }
                                 }
                             }
                         }
@@ -127,7 +171,7 @@ namespace CaixaApp.Views
                         contentStackLayout.Children.Add(stackLayoutFerramenta);
                     }
                     ((StackLayout)Content).Children.Add(stackLayoutFerramenta);
-                    Ferramentas.Add(ferramenta);
+                    ferramentas.Add(ferramenta);
                 }
                 else
                 {
@@ -136,9 +180,31 @@ namespace CaixaApp.Views
             }
             catch (Exception)
             {
+				throw;
+            }
+        }
 
+		private async void buttonFinalizar_Clicked(object sender, EventArgs e)
+		{
+            try
+            {
+				if (await DisplayAlert("Confirmação", "Tem certeza que deseja finalizar?", "Sim", "Não"))
+                {
+                    if (Processo=="Montar caixa")
+                    {
+                        foreach (var ferramenta in ferramentas)
+                        {
+                            ferramenta.IdCaixa = Caixa.Id;
+                            context.Atualizar(ferramenta);
+                        }
+                        context.Atualizar(colaborador);
+                    }
+                }
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }
-    }
+	}
 }

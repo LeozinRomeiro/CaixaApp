@@ -8,7 +8,7 @@
                 <Label Text="Selecione o tipo de cadastro:"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-                <StackLayout BackgroundColor="White">
+                <StackLayout x:Name="stackLayoutTipoCadastro" BackgroundColor="White">
                     <Picker x:Name="TipoCadastroPicker" SelectedIndexChanged="TipoCadastroPicker_SelectedIndexChanged" SelectedItem="Colaborador" HorizontalTextAlignment="Center" TextColor="Black">
                         <Picker.Items>
                             <x:String>Ferramenta</x:String>

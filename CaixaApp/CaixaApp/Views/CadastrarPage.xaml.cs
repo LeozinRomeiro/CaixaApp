@@ -112,8 +112,6 @@ namespace CaixaApp.Views
                         ferramenta.Nome = Camp2Entry.Text;
                         ferramenta.Tipo = Camp3Entry.Text;
                         ferramenta.Quantidade = int.Parse(Camp4Entry.Text);
-                        ferramenta.Id = int.Parse(Camp5Entry.Text);
-						ferramenta.IdCaixa = int.Parse(Camp6Entry.Text);
                         if (buttonSalvar.Text=="Atualizar")
                         {
                             context.Atualizar(ferramenta);
@@ -128,8 +126,6 @@ namespace CaixaApp.Views
                         colaborador.Nome = Camp2Entry.Text;
                         colaborador.Setor = Camp3Entry.Text;
                         colaborador.Cargo = Camp4Entry.Text;
-                        colaborador.Id = int.Parse(Camp5Entry.Text);
-                        colaborador.IdCaixa = int.Parse(Camp6Entry.Text);
                         if (buttonSalvar.Text == "Atualizar")
                         {
                             context.Atualizar(colaborador);

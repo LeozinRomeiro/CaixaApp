@@ -4,13 +4,11 @@
              x:Class="CaixaApp.Views.CaixaPage">
     <ContentPage.Content>
         <StackLayout Padding="20" >
-            <StackLayout x:Name="stackLayoutCaixa" Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
+            <StackLayout x:Name="stackLayoutCaixa" Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="CenterAndExpand">
                 <!--<Entry x:Name="codigo"/>-->
-                <Label Text="Caixa sobre responsabilidade de: " FontSize="16"/>
-                <Label x:Name="labelColaborador" Text="" FontSize="16"/>
+                <Label Text="Caixa sobre responsabilidade de..." FontSize="16"/>
+                <Label x:Name="labelColaborador" Text="" FontSize="18"/>
             </StackLayout>
-            <Button Text="Ler caixa" Clicked="LerCaixaClicked"/>
-            <Button Text="Adicionar Nova Ferramenta" Clicked="AdicionarStackLayoutClicked" />
             <!--# stacklayout exemplo
             <StackLayout x:Name="stackLayoutFerramenta" Orientation="Horizontal">
                 <StackLayout>
@@ -22,6 +20,11 @@
                     <Label x:Name="labelTipo" Text="" FontSize="20"/>
                 </StackLayout>
             </StackLayout>-->
+            <StackLayout VerticalOptions="End">
+                <Button Text="Ler caixa" Clicked="LerCaixaClicked"/>
+                <Button Text="Adicionar Nova Ferramenta" Clicked="AdicionarStackLayoutClicked" />
+                <Button x:Name="buttonFinalizar" Text="Salvar seleção" Clicked="buttonFinalizar_Clicked"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

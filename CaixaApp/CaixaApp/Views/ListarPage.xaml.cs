@@ -21,7 +21,17 @@ namespace CaixaApp.Views
             InitializeComponent();
             EscolherSelecionado();
         }
-        public async void EscolherSelecionado()
+		private Action<Colaborador> _definirColaborador;
+		public ListarPage(Action<Colaborador> DefinirColaborador)
+		{
+			InitializeComponent();
+            Selecionado = "Colaborador";
+            TipoCadastroPicker.SelectedItem = Selecionado;
+            PreencherTela();
+            _definirColaborador = DefinirColaborador;
+			stackLayoutTipoCadastro.IsVisible = true;
+		}
+		public async void EscolherSelecionado()
         {
             Selecionado = await DisplayActionSheet("Escolhar o cadastrado:", "Cancelar", null, "Ferramenta", "Colaborador");
             TipoCadastroPicker.SelectedItem = Selecionado;
@@ -89,9 +99,8 @@ namespace CaixaApp.Views
                         break;
                 }
             }
-            catch (Exception e )
+            catch (Exception)
             {
-                DisplayAlert("Erro",e.Message,"Cancelar");
                 throw ;
             }
             //if (int.TryParse(textoBuscado, out int NumerBuscado))
@@ -129,9 +138,17 @@ namespace CaixaApp.Views
                     return;
                 if (e.SelectedItem is Colaborador colaborador)
                 {
-                    Navigation.PushAsync(new CadastrarPage(colaborador));
-                }
-            }
+                    if (!stackLayoutTipoCadastro.IsVisible==true)
+                    {
+                        Navigation.PushAsync(new CadastrarPage(colaborador));
+                    }
+                    else
+                    {
+                        _definirColaborador.Invoke(colaborador);
+					    Navigation.PopAsync();
+                    }
+				}
+			}
             catch (Exception)
             {
 

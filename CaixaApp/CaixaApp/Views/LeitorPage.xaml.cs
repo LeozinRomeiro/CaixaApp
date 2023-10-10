@@ -19,7 +19,7 @@ namespace CaixaApp.Views
         {
             InitializeComponent();
             _onCodeScanned = OnCodeScanned;
-        }
+		}
 
         //private void ZXingScannerView_OnScanResult(ZXing.Result result)
         //{
