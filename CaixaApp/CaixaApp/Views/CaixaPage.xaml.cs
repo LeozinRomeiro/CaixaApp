@@ -41,29 +41,27 @@ namespace CaixaApp.Views
 			if (Processo == "Montar caixa")
 			{
 				await Navigation.PushAsync(new ListarPage(DefinirColaborador));
-                buttonCaixa.BackgroundColor = Color.Green;
-                buttonCaixa.TextColor = Color.White;
+                MostrarButton(buttonCaixa);
             }
             else
             {
-                buttonCaixa.BackgroundColor = Color.Green;
-                buttonCaixa.TextColor = Color.White;
-                //if (await DisplayAlert("Verificar caixa", "Por favor leia o QRcode da caixa do funcionario...", "Abrir leitor", "Cancelar"))
-                //{
-                //}
-                //if (Caixa.Codigo != null)
-                //         {
-                //             await LerCodigoCaixaAsync();
-                //         }
-                //         else
-                //         {
-                //             bool resposta = await DisplayAlert("Substituir", "O dono da caixa já foi selecionado, quer alterar?", "Sim", "Não");
-                //             if (resposta)
-                //             {
-                //		await LerCodigoCaixaAsync();
-                //	}
-                //         }
-            }
+				MostrarButton(buttonCaixa);
+				//if (await DisplayAlert("Verificar caixa", "Por favor leia o QRcode da caixa do funcionario...", "Abrir leitor", "Cancelar"))
+				//{
+				//}
+				//if (Caixa.Codigo != null)
+				//         {
+				//             await LerCodigoCaixaAsync();
+				//         }
+				//         else
+				//         {
+				//             bool resposta = await DisplayAlert("Substituir", "O dono da caixa já foi selecionado, quer alterar?", "Sim", "Não");
+				//             if (resposta)
+				//             {
+				//		await LerCodigoCaixaAsync();
+				//	}
+				//         }
+			}
         }
 		private async void AdicionarStackLayoutClicked(object sender, EventArgs e)
         {
@@ -73,6 +71,7 @@ namespace CaixaApp.Views
         {
 			await LerCodigoCaixaAsync();
             buttonCaixa.IsVisible = false;
+            MostrarButton(buttonAdicionarStackLayout);
 		}
 
         private async Task LerCodigoCaixaAsync()
@@ -141,9 +140,10 @@ namespace CaixaApp.Views
         {
 			Caixa = context.LocalizarFerramenta(codigoLido);
             colaborador.IdCaixa = Caixa.Id;
-            colaborador = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa));
-            labelColaborador.Text = colaborador.Nome;
-        }
+            DefinirColaborador(context.LocalizarColaboradorCaixa(Caixa.IdCaixa));
+			string texto = Caixa.Nome +" " + Caixa.Tipo;
+			labelCaixa.Text = texto;
+		}
         private bool VerificarRepeticao(string codigoLido)
         {
             foreach (var ferramenta in ferramentas)
@@ -160,6 +160,12 @@ namespace CaixaApp.Views
         {
             ferramentasCaixa = context.LocalizarFerramentasNaCaixa(caixa);
         }
+
+        private void MostrarButton(Button button)
+        {
+			button.BackgroundColor = Color.Green;
+			button.TextColor = Color.White;
+		}
 
         private async Task CriarStakyLauout(string codigo)
         {
@@ -192,8 +198,8 @@ namespace CaixaApp.Views
                                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                                 Children =
                                 {
-                                    new Label {  Text = ferramenta.Nome, FontSize = 18 },
-                                    new Label { Text = ferramenta.Tipo, FontSize = 18 }
+                                    new Label {  Text = ferramenta.Nome, FontSize = 18, TextColor=Color.Black },
+                                    new Label { Text = ferramenta.Tipo, FontSize = 18, TextColor=Color.Black }
                                 }
                             }
                         }

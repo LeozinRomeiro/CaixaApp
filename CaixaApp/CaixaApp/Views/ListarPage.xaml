@@ -1,55 +1,62 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CaixaApp.Views.ListarPage">
+             x:Class="CaixaApp.Views.ListarPage" BackgroundColor="#f0f0f0">
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout >
+        <StackLayout Padding="20">
+
+            <StackLayout Padding="20" Margin="0,0,0,10">
                 <Label Text="Selecione o tipo de cadastro:"
                 VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-                <StackLayout x:Name="stackLayoutTipoCadastro" BackgroundColor="White">
+                HorizontalOptions="CenterAndExpand" TextColor="Black"/>
+                <StackLayout x:Name="stackLayoutTipoCadastro" BackgroundColor="White" Padding="10" Margin="0,1,0,0">
                     <Picker x:Name="TipoCadastroPicker" SelectedIndexChanged="TipoCadastroPicker_SelectedIndexChanged" SelectedItem="Colaborador" HorizontalTextAlignment="Center" TextColor="Black">
-                        <Picker.Items>
+                        <Picker.Items CornerRadius="10">
                             <x:String>Ferramenta</x:String>
                             <x:String>Colaborador</x:String>
                         </Picker.Items>
                     </Picker>
                 </StackLayout>
             </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Entry x:Name="texteBuscado" Keyboard="Plain" Placeholder="Nome da caixa" HorizontalOptions="StartAndExpand"/>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="0,0,0,0" BackgroundColor="White">
+                <Entry x:Name="texteBuscado" Keyboard="Plain" Placeholder="Digite algo para pesquisar..." HorizontalOptions="StartAndExpand" TextColor="Black" PlaceholderColor="Black" HeightRequest="50" WidthRequest="300"/>
             </StackLayout>
+
             <StackLayout>
-                <Label Text="A lista resultante da sua busca:" HorizontalOptions="CenterAndExpand" />
+                <Label Text="A lista resultante da sua busca:" HorizontalOptions="CenterAndExpand" TextColor="Black" />
             </StackLayout>
-            <ListView x:Name="ListaFerramenta" BackgroundColor="White" HasUnevenRows="True" SeparatorColor="Red" Margin="15" ItemSelected="ListaFerramenta_ItemSelected" IsVisible="false">
+
+            <ListView x:Name="ListaFerramenta" BackgroundColor="White" HasUnevenRows="True" SeparatorColor="Blue" Margin="15" ItemSelected="ListaFerramenta_ItemSelected" IsVisible="false">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout x:Name="listaStackLayoutFerramenta" Orientation="Vertical" Padding="10">
-                                <Label Text="{Binding Nome}" TextColor="Black" FontSize="20" />
-                                <Label Text="{Binding Tipo}" TextColor="Black" FontSize="18" />
+                            <StackLayout x:Name="listaStackLayoutFerramenta" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="10" BackgroundColor="White" Margin="0,0,0,10">
+                                <Label Text="{Binding Nome, StringFormat='Nome: {0}'}" TextColor="Black" FontSize="20" />
+                                <Label Text="{Binding Tipo, StringFormat='Tipo: {0}'}" TextColor="Black" FontSize="18" />
                                 <Label Text="{Binding Quantidade, StringFormat='Quantidade: {0}'}" TextColor="Black" FontSize="18" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ListView x:Name="ListaColaborador" BackgroundColor="White" HasUnevenRows="True" SeparatorColor="Red" Margin="15" ItemSelected="ListaColaborador_ItemSelected" IsVisible="false">
+
+            <ListView x:Name="ListaColaborador" BackgroundColor="White" HasUnevenRows="True" SeparatorColor="Blue" Margin="15" ItemSelected="ListaColaborador_ItemSelected" IsVisible="false">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout x:Name="listaStackLayoutColaborado" Orientation="Vertical" Padding="10">
-                                <Label Text="{Binding Nome}" TextColor="Black" FontSize="20" />
-                                <Label Text="{Binding Setor}" TextColor="Black" FontSize="18" />
-                                <Label Text="{Binding Cargo}" TextColor="Black" FontSize="18" />
+                            <StackLayout x:Name="listaStackLayoutColaborado" Orientation="Vertical" HorizontalOptions="CenterAndExpand" Padding="10" BackgroundColor="White" Margin="0,0,0,10">
+                                <Label Text="{Binding Nome, StringFormat='Nome: {0}'}" TextColor="Black" FontSize="20" />
+                                <Label Text="{Binding Setor, StringFormat='Setor: {0}'}" TextColor="Black" FontSize="18" />
+                                <Label Text="{Binding Cargo, StringFormat='Cargo: {0}'}" TextColor="Black" FontSize="18" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="buttonLocalizar" Text="Localizar" Clicked="buttonLocalizar_Clicked"/>
+
+            <Button x:Name="buttonLocalizar" Text="Localizar" Clicked="buttonLocalizar_Clicked" BackgroundColor="#4CAF50" TextColor="White" CornerRadius="10" HorizontalOptions="FillAndExpand" Margin="0,20,0,0"/>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
