@@ -78,6 +78,7 @@ namespace CaixaApp.Views
                     Camp4Entry.Placeholder = "Quantidade";
 					Camp5Entry.IsVisible = false;
 					Camp6Entry.IsVisible = false;
+                    buttonSalvar.IsVisible = false;
 					break;
                 case "Colaborador":
                     Camp1Entry.IsVisible = false;
@@ -87,6 +88,7 @@ namespace CaixaApp.Views
                     Camp4Entry.Placeholder = "Cargo";
                     Camp5Entry.IsVisible = false;
                     Camp6Entry.IsVisible = false;
+                    Leitor.IsVisible= false;
                     break;
                 default:
                     // Trate qualquer seleção inválida aqui
@@ -186,6 +188,7 @@ namespace CaixaApp.Views
         {
             await Navigation.PushAsync(new LeitorPage(OnCodeScanned));
             Camp1Entry.SetBinding(Entry.TextProperty, new Binding("Codigo"));
+            buttonSalvar.IsVisible = true;
         }
 
         private void OnCodeScanned(string codigo)

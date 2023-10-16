@@ -21,22 +21,22 @@
             <StackLayout VerticalOptions="StartAndExpand">
 
                 <Frame x:Name="frameCodigo" BackgroundColor="White" CornerRadius="10" Margin="0,20,0,10" IsVisible="false">
-                    <Label Text="Campo 1" x:Name="Camp1Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0"/>
+                    <Label Text="Campo 1" x:Name="Camp1Entry"  BackgroundColor="Black" TextColor="White" Margin="0,1,0,0"/>
                 </Frame>
                 <Frame BackgroundColor="White" CornerRadius="10" Margin="0,0,0,0">
-                    <Entry Placeholder="Campo 2" x:Name="Camp2Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0" />
+                    <Entry Placeholder="Campo 2" x:Name="Camp2Entry"  BackgroundColor="Black" TextColor="White" Margin="0,1,0,0" />
                 </Frame>
                 <Frame BackgroundColor="White" CornerRadius="10" Margin="0,0,0,0">
-                    <Entry Placeholder="Campo 3" x:Name="Camp3Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0"/>
+                    <Entry Placeholder="Campo 3" x:Name="Camp3Entry"  BackgroundColor="Black" TextColor="White" Margin="0,1,0,0"/>
                 </Frame>
                 <Frame BackgroundColor="White" CornerRadius="10" Margin="0,0,0,0">
-                    <Entry Placeholder="Campo 4" x:Name="Camp4Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0"/>
+                    <Entry Placeholder="Campo 4" x:Name="Camp4Entry"  BackgroundColor="Black" TextColor="White" Margin="0,1,0,0"/>
                 </Frame>
                 <Frame BackgroundColor="White" CornerRadius="10" Margin="0,0,0,0" IsVisible="false">
-                    <Entry Placeholder="Campo 5" x:Name="Camp5Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0" />
+                    <Entry Placeholder="Campo 5" x:Name="Camp5Entry"  BackgroundColor="Black" TextColor="White" Margin="0,1,0,0" />
                 </Frame>
                 <Frame BackgroundColor="White" CornerRadius="10" Margin="0,0,0,0" IsVisible="false" >
-                    <Entry Placeholder="Campo 6" x:Name="Camp6Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0" IsVisible="false"/>
+                    <Entry Placeholder="Campo 6" x:Name="Camp6Entry"  BackgroundColor="Black" TextColor="White" Margin="0,1,0,0" IsVisible="false"/>
                 </Frame>
             </StackLayout>
 

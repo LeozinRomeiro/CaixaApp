@@ -4,23 +4,21 @@
              x:Class="CaixaApp.Views.CaixaPage" BackgroundColor="#f0f0f0">
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Padding="20" VerticalOptions="CenterAndExpand">
+        <StackLayout Padding="20" VerticalOptions="CenterAndExpand">
 
-                <StackLayout x:Name="stackLayoutCaixa" Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" BackgroundColor="#2196F3" Padding="20" Margin="0,0,0,20">
-                    <Label Text="Detalhes da operação:" FontSize="18" TextColor="White"/>
-                    <Label Text="Responsavel: " FontSize="18" TextColor="White"/>
-                    <Label x:Name="labelColaborador" Text="?" FontSize="20" TextColor="White" FontAttributes="Bold"/>
-                    <Label Text="Caixa: " FontSize="18" TextColor="White"/>
-                    <Label x:Name="labelCaixa" Text="?" FontSize="20" TextColor="White" FontAttributes="Bold"/>
-                </StackLayout>
-
-                <StackLayout VerticalOptions="EndAndExpand">
-                    <Button x:Name="buttonCaixa" Text="Apontar caixa" Clicked="LerCaixaClicked" BackgroundColor="#4682B4" TextColor="White" CornerRadius="10" Margin="0,0,0,10"/>
-                    <Button x:Name="buttonAdicionarStackLayout" Text="Adicionar Nova Ferramenta" Clicked="AdicionarStackLayoutClicked" BackgroundColor="#4682B4" TextColor="White" CornerRadius="10" Margin="0,0,0,10"/>
-                    <Button x:Name="buttonFinalizar" Text="Salvar seleção" Clicked="buttonFinalizar_Clicked" BackgroundColor="#4682B4" TextColor="White" CornerRadius="10" Margin="0,0,0,10"/>
-                </StackLayout>
+            <StackLayout x:Name="stackLayoutCaixa" Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" BackgroundColor="#2196F3" Padding="20" Margin="0,0,0,20">
+                <Label Text="Detalhes da operação:" FontSize="18" TextColor="White"/>
+                <Label Text="Responsavel: " FontSize="18" TextColor="White"/>
+                <Label x:Name="labelColaborador" Text="?" FontSize="20" TextColor="White" FontAttributes="Bold"/>
+                <Label Text="Caixa: " FontSize="18" TextColor="White"/>
+                <Label x:Name="labelCaixa" Text="?" FontSize="20" TextColor="White" FontAttributes="Bold"/>
             </StackLayout>
-        </ScrollView>
+
+            <StackLayout VerticalOptions="EndAndExpand">
+                <Button x:Name="buttonCaixa" Text="Apontar caixa" Clicked="LerCaixaClicked" BackgroundColor="#4682B4" TextColor="White" CornerRadius="10" Margin="0,0,0,10"/>
+                <Button x:Name="buttonAdicionarStackLayout" Text="Adicionar Nova Ferramenta" Clicked="AdicionarStackLayoutClicked" BackgroundColor="#4682B4" TextColor="White" CornerRadius="10" Margin="0,0,0,10"/>
+                <Button x:Name="buttonFinalizar" Text="Salvar seleção" Clicked="buttonFinalizar_Clicked" BackgroundColor="#4682B4" TextColor="White" CornerRadius="10" Margin="0,0,0,10"/>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

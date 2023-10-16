@@ -88,19 +88,6 @@ namespace CaixaApp.Data
             }
         }
 
-        public Ferramenta LocalizarFerramentaCodigo(string codigo)
-        {
-            try
-            {
-                return con.Table<Ferramenta>().FirstOrDefault(x => x.Codigo == codigo);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
         public Ferramenta LocalizarCaixa(int id)
         {
             try
@@ -297,20 +284,20 @@ namespace CaixaApp.Data
 
         //public List<Ferramenta> EncontrarFerramentas(int id)
         //{
-        //    List<Ferramenta> ferramentas = new List<Ferramenta>();
+        //    List<Ferramenta> ferramentasAnalise = new List<Ferramenta>();
         //    try
         //    {
         //        var resposta = from caixa in con.Table<Caixa>() 
         //                       join ferramenta in con.Table<Ferramenta>()
         //                       on caixa.IdFerramenta equals ferramenta.Id
         //                       where caixa.Id == id select p;
-        //        ferramentas = resposta.ToList();
+        //        ferramentasAnalise = resposta.ToList();
         //    }
         //    catch (Exception)
         //    {
         //        throw;
         //    }
-        //    return ferramentas;
+        //    return ferramentasAnalise;
         //}
     }
 }

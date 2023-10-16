@@ -50,9 +50,9 @@ namespace CaixaApp.Views
                 {
                     //case "Ferramenta":
 
-                    //    List<Ferramenta> ferramentas= context.LocalizarFerramentas(textoBuscado);
+                    //    List<Ferramenta> ferramentasAnalise= context.LocalizarFerramentas(textoBuscado);
 
-                    //    foreach (var ferramenta in ferramentas)
+                    //    foreach (var ferramenta in ferramentasAnalise)
                     //    {
                     //        InformacoesListadas informacoes = new InformacoesListadas();
                     //        informacoes.Texto = $"{ferramenta.Nome} {ferramenta.Tipo} {ferramenta.Quantidade} "; // Adicione todos os atributos que deseja exibir
@@ -76,7 +76,7 @@ namespace CaixaApp.Views
                         ListaFerramenta.IsVisible = true;
                         ListaColaborador.IsVisible = false;
                         ListaFerramenta.ItemsSource= ferramentas;
-                        //foreach (var ferramenta in ferramentas)
+                        //foreach (var ferramenta in ferramentasAnalise)
                         //{
                         //    InformacoesListadas informacoes = new InformacoesListadas();
                         //    informacoes.Texto = $"{ferramenta.Nome} {ferramenta.Tipo} {ferramenta.Quantidade} "; // Adicione todos os atributos que deseja exibir

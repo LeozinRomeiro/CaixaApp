@@ -17,12 +17,13 @@ namespace CaixaApp.Views
     public partial class CaixaPage : ContentPage
     {
         string CodigoLido;
+        bool Repetido;
         string Processo;
         Context context = new Context(App.Path);
         static Ferramenta Caixa = new Ferramenta();
         static Colaborador colaborador = new Colaborador();
-        static List<Ferramenta> ferramentas = new List<Ferramenta>();
-		static List<Ferramenta> ferramentasCaixa = new List<Ferramenta>();
+        static List<Ferramenta> ferramentasAnalise = new List<Ferramenta>();
+		static List<Ferramenta> ferramentasRegistras = new List<Ferramenta>();
 		public CaixaPage()
         {
             InitializeComponent();
@@ -31,6 +32,7 @@ namespace CaixaApp.Views
         public CaixaPage(string processo)
         {
             Processo = processo;
+            EscolherProcesso();
         }
         public async void EscolherProcesso()
 		{
@@ -42,10 +44,13 @@ namespace CaixaApp.Views
 			{
 				await Navigation.PushAsync(new ListarPage(DefinirColaborador));
                 MostrarButton(buttonCaixa);
-            }
+				buttonFinalizar.Text = "Registrar nessa caixa";
+			}
             else
             {
 				MostrarButton(buttonCaixa);
+                buttonFinalizar.Text = "Finalizar verificacão";
+                buttonAdicionarStackLayout.Text = "Verificar ferramenta";
 				//if (await DisplayAlert("Verificar caixa", "Por favor leia o QRcode da caixa do funcionario...", "Abrir leitor", "Cancelar"))
 				//{
 				//}
@@ -102,12 +107,11 @@ namespace CaixaApp.Views
 			{
 				if (!string.IsNullOrEmpty(CodigoLido))
 				{
-                    if (!VerificarRepeticao(CodigoLido))
+					if (Repetido||!string.IsNullOrEmpty(CodigoLido))
                     {
                         if (CodigoLido!=Caixa.Codigo.ToString())
                         {
 						    await CriarStakyLauout(CodigoLido);
-						    ferramentas.Add(context.LocalizarFerramenta(CodigoLido));
                         }
                         else
                         {
@@ -130,8 +134,9 @@ namespace CaixaApp.Views
 		private void OnCodeScanned(string codigo)
         {
             CodigoLido = codigo;
-        }
-        private void DefinirColaborador(Colaborador _colaborador)
+			Repetido = VerificarRepeticao(CodigoLido);
+		}
+		private void DefinirColaborador(Colaborador _colaborador)
         {
             colaborador = _colaborador;
             labelColaborador.Text = colaborador.Nome;
@@ -146,7 +151,7 @@ namespace CaixaApp.Views
 		}
         private bool VerificarRepeticao(string codigoLido)
         {
-            foreach (var ferramenta in ferramentas)
+            foreach (var ferramenta in ferramentasAnalise)
             {
                 if(ferramenta.Codigo == codigoLido)
                 {
@@ -158,7 +163,7 @@ namespace CaixaApp.Views
 
         private void BuscarFerramentasCaixa(Ferramenta caixa)
         {
-            ferramentasCaixa = context.LocalizarFerramentasNaCaixa(caixa);
+            ferramentasRegistras = context.LocalizarFerramentasNaCaixa(caixa);
         }
 
         private void MostrarButton(Button button)
@@ -172,7 +177,7 @@ namespace CaixaApp.Views
             try
             {
                 Ferramenta ferramenta = new Ferramenta();
-                ferramenta = context.LocalizarFerramentaCodigo(codigo);
+                ferramenta = context.LocalizarFerramenta(codigo);
                 if (ferramenta != null)
                 {
                     var stackLayoutFerramenta = new StackLayout
@@ -204,13 +209,18 @@ namespace CaixaApp.Views
                             }
                         }
                     };
+                    var scrollView = new ScrollView
+                    {
+                        VerticalOptions = LayoutOptions.CenterAndExpand,
+                        Content = stackLayoutFerramenta,
+                    };
                     var contentStackLayout = Content as StackLayout;
                     if (contentStackLayout != null)
                     {
-                        contentStackLayout.Children.Add(stackLayoutFerramenta);
+                        contentStackLayout.Children.Add(scrollView);
                     }
-                    ((StackLayout)Content).Children.Add(stackLayoutFerramenta);
-                    ferramentas.Add(ferramenta);
+                    //((StackLayout)Content).Children.Add(stackLayoutFerramenta);
+                    ferramentasAnalise.Add(ferramenta);
                 }
                 else
                 {
@@ -231,7 +241,7 @@ namespace CaixaApp.Views
                 {
                     if (Processo == "Montar caixa")
                     {
-                        foreach (var ferramenta in ferramentas)
+                        foreach (var ferramenta in ferramentasAnalise)
                         {
                             ferramenta.IdCaixa = Caixa.Id;
                             context.Atualizar(ferramenta);
@@ -241,24 +251,31 @@ namespace CaixaApp.Views
                     }
                     else
                     {
-                        foreach (var ferramentaEsperada in ferramentasCaixa)
-                        {
-                            foreach (var ferramenta in ferramentas)
-                            {
-                                if (ferramentaEsperada.Id == ferramenta.Id)
-                                {
-                                    ferramentasCaixa.Remove(ferramentaEsperada);
-                                }
-                            }
-                        }
-                        if (ferramentasCaixa.Count == 0)
+						var ferramentasToRemove = new List<Ferramenta>();
+
+						foreach (var ferramentaEsperada in ferramentasRegistras)
+						{
+							foreach (var ferramenta in ferramentasAnalise)
+							{
+								if (ferramentaEsperada.Id == ferramenta.Id)
+								{
+									ferramentasToRemove.Add(ferramentaEsperada);
+								}
+							}
+						}
+
+						foreach (var ferramentaToRemove in ferramentasToRemove)
+						{
+							ferramentasRegistras.Remove(ferramentaToRemove);
+						}
+						if (ferramentasRegistras.Count == 0)
                         {
                             await DisplayAlert("Sucesso", "Todas as ferramentas estão presentes!", "Concluir");
                         }
                         else
                         {
                             string Faltantes = string.Empty;
-                            foreach (var ferramentaFaltante in ferramentasCaixa)
+                            foreach (var ferramentaFaltante in ferramentasRegistras)
                             {
                                 Faltantes += ferramentaFaltante.Nome + "\n";
                             }
