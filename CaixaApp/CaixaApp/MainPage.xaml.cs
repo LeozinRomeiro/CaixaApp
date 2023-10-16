@@ -32,7 +32,7 @@ namespace CaixaApp
 
         private async void ImageButtonLeitor_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new Views.CaixaPage());
+            await Navigation.PushAsync(new Views.CaixaPage("Verificar caixa"));
         }
     }
 }
