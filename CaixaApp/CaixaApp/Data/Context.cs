@@ -69,26 +69,24 @@ namespace CaixaApp.Data
                 throw;
             }
         }
-        //public List<Ferramenta> LocalizarFerramentasNaCaixa(int id)
-        //{
-        //    try
-        //    {
-        //        Caixa caixa = con.Table<Caixa>().FirstOrDefault(x => x.Id == id);
-        //        if (caixa != null)
-        //        {
-        //            return con.Table<Ferramenta>().Where(x => x.IdCaixa == id).ToList();
-        //        }
-        //        else
-        //        {
-        //            return new List<Ferramenta>();
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-
-        ///        throw;
-        //    }
-        //}
+        public List<Ferramenta> LocalizarFerramentasNaCaixa(Ferramenta caixa)
+        {
+            try
+            {
+                if (caixa != null)
+                {
+                    return con.Table<Ferramenta>().Where(x => x.IdCaixa == caixa.Id).ToList();
+                }
+                else
+                {
+                    return new List<Ferramenta>();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public Ferramenta LocalizarFerramentaCodigo(string codigo)
         {

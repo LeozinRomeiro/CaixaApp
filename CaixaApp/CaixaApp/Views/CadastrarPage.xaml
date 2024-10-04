@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CaixaApp.Views.CadastrarPage">
+             x:Class="CaixaApp.Views.CadastrarPage" BackgroundColor="#f0f0f0">
     <ContentPage.Content>
         <StackLayout>
-            
-            <StackLayout >
+            <StackLayout Padding="20" Margin="0,0,0,10">
                 <Label Text="Selecione o tipo de cadastro:"
                 VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-                <StackLayout BackgroundColor="White">
+                HorizontalOptions="CenterAndExpand" TextColor="Black"/>
+                <StackLayout BackgroundColor="White" Padding="10" Margin="0,1,0,0">
                     <Picker x:Name="TipoCadastroPicker" SelectedIndexChanged="TipoCadastroPicker_SelectedIndexChanged" SelectedItem="Colaborador" HorizontalTextAlignment="Center" TextColor="Black">
-                        <Picker.Items>
+                        <Picker.Items CornerRadius="10">
                             <x:String>Ferramenta</x:String>
                             <x:String>Colaborador</x:String>
                         </Picker.Items>
@@ -19,18 +18,33 @@
                 </StackLayout>
             </StackLayout>
 
-            <Entry Placeholder="" x:Name="Camp1Entry"/>
-            <Entry Placeholder="" x:Name="Camp2Entry" />
-            <Entry Placeholder="" x:Name="Camp3Entry" />
-            <Entry Placeholder="" x:Name="Camp4Entry" />
-            <Entry Placeholder="" x:Name="Camp5Entry" />
-            <Entry Placeholder="" x:Name="Camp6Entry" />
+            <StackLayout VerticalOptions="StartAndExpand">
 
-            <ImageButton BackgroundColor="White" HeightRequest="150" WidthRequest="5" Source="leitor"  x:Name="Leitor" Clicked="Leitor_Clicked"/>
+                <Frame x:Name="frameCodigo" BackgroundColor="White" CornerRadius="10" Margin="0,20,0,10" IsVisible="false">
+                    <Label Text="Campo 1" x:Name="Camp1Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0"/>
+                </Frame>
+                <Frame BackgroundColor="White" CornerRadius="10" Margin="0,0,0,0">
+                    <Entry Placeholder="Campo 2" x:Name="Camp2Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0" />
+                </Frame>
+                <Frame BackgroundColor="White" CornerRadius="10" Margin="0,0,0,0">
+                    <Entry Placeholder="Campo 3" x:Name="Camp3Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0"/>
+                </Frame>
+                <Frame BackgroundColor="White" CornerRadius="10" Margin="0,0,0,0">
+                    <Entry Placeholder="Campo 4" x:Name="Camp4Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0"/>
+                </Frame>
+                <Frame BackgroundColor="White" CornerRadius="10" Margin="0,0,0,0" IsVisible="false">
+                    <Entry Placeholder="Campo 5" x:Name="Camp5Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0" />
+                </Frame>
+                <Frame BackgroundColor="White" CornerRadius="10" Margin="0,0,0,0" IsVisible="false" >
+                    <Entry Placeholder="Campo 6" x:Name="Camp6Entry"  BackgroundColor="#4169E1" TextColor="White" Margin="0,1,0,0" IsVisible="false"/>
+                </Frame>
+            </StackLayout>
+
+            <ImageButton BackgroundColor="Transparent" Source="leitor"  x:Name="Leitor" Clicked="Leitor_Clicked" HeightRequest="100" WidthRequest="75"/>
             <StackLayout Orientation="Horizontal" Margin="20,0,20,20">
-                <Button x:Name="buttonSalvar" Text="Inserir" Clicked="buttonSalvar_Clicked" HorizontalOptions="FillAndExpand"/>
-                <Button x:Name="buttonExcluir" Text="Excluir" Clicked="buttonExcluir_Clicked" IsVisible="false" HorizontalOptions="FillAndExpand"/>
-                <Button x:Name="buttontCancelar" Text="Cancelar" Clicked="buttontCancelar_Clicked" HorizontalOptions="FillAndExpand" />
+                <Button x:Name="buttonSalvar" CornerRadius="10" Text="Inserir" Clicked="buttonSalvar_Clicked" HorizontalOptions="FillAndExpand" BackgroundColor="#3498db" TextColor="White"/>
+                <Button x:Name="buttonExcluir" CornerRadius="10" Text="Excluir" Clicked="buttonExcluir_Clicked" IsVisible="false" HorizontalOptions="FillAndExpand" BackgroundColor="#e74c3c" TextColor="White"/>
+                <Button x:Name="buttontCancelar" CornerRadius="10" Text="Cancelar" Clicked="buttontCancelar_Clicked" HorizontalOptions="FillAndExpand" BackgroundColor="#95a5a6" TextColor="White" />
             </StackLayout>
 
         </StackLayout>

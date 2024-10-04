@@ -72,7 +72,7 @@ namespace CaixaApp.Views
 			switch (Selecionado)
             {
                 case "Ferramenta":
-                    Camp1Entry.Placeholder = "Codigo";
+                    Camp1Entry.Text = "Aperte no leitor para ler o cidgo";
                     Camp2Entry.Placeholder = "Nome";
                     Camp3Entry.Placeholder = "Tipo";
                     Camp4Entry.Placeholder = "Quantidade";
@@ -81,7 +81,8 @@ namespace CaixaApp.Views
 					break;
                 case "Colaborador":
                     Camp1Entry.IsVisible = false;
-					Camp2Entry.Placeholder = "Nome";
+                    frameCodigo.IsVisible = false;
+                    Camp2Entry.Placeholder = "Nome";
                     Camp3Entry.Placeholder = "Setor";
                     Camp4Entry.Placeholder = "Cargo";
                     Camp5Entry.IsVisible = false;

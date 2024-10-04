@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,13 +23,15 @@ namespace CaixaApp.Views
         static Ferramenta Caixa = new Ferramenta();
         static Colaborador colaborador = new Colaborador();
         static List<Ferramenta> ferramentas = new List<Ferramenta>();
-        public CaixaPage()
+		static List<Ferramenta> ferramentasCaixa = new List<Ferramenta>();
+		public CaixaPage()
         {
             InitializeComponent();
             EscolherProcesso();
         }
         public CaixaPage(string processo)
         {
+            InitializeComponent();
             Processo = processo;
         }
         public async void EscolherProcesso()
@@ -40,29 +43,27 @@ namespace CaixaApp.Views
 			if (Processo == "Montar caixa")
 			{
 				await Navigation.PushAsync(new ListarPage(DefinirColaborador));
-                buttonCaixa.BackgroundColor = Color.Green;
-                buttonCaixa.TextColor = Color.White;
+                MostrarButton(buttonCaixa);
             }
             else
             {
-                buttonCaixa.BackgroundColor = Color.Green;
-                buttonCaixa.TextColor = Color.White;
-                //if (await DisplayAlert("Verificar caixa", "Por favor leia o QRcode da caixa do funcionario...", "Abrir leitor", "Cancelar"))
-                //{
-                //}
-                //if (Caixa.Codigo != null)
-                //         {
-                //             await LerCodigoCaixaAsync();
-                //         }
-                //         else
-                //         {
-                //             bool resposta = await DisplayAlert("Substituir", "O dono da caixa já foi selecionado, quer alterar?", "Sim", "Não");
-                //             if (resposta)
-                //             {
-                //		await LerCodigoCaixaAsync();
-                //	}
-                //         }
-            }
+				MostrarButton(buttonCaixa);
+				//if (await DisplayAlert("Verificar caixa", "Por favor leia o QRcode da caixa do funcionario...", "Abrir leitor", "Cancelar"))
+				//{
+				//}
+				//if (Caixa.Codigo != null)
+				//         {
+				//             await LerCodigoCaixaAsync();
+				//         }
+				//         else
+				//         {
+				//             bool resposta = await DisplayAlert("Substituir", "O dono da caixa já foi selecionado, quer alterar?", "Sim", "Não");
+				//             if (resposta)
+				//             {
+				//		await LerCodigoCaixaAsync();
+				//	}
+				//         }
+			}
         }
 		private async void AdicionarStackLayoutClicked(object sender, EventArgs e)
         {
@@ -72,6 +73,7 @@ namespace CaixaApp.Views
         {
 			await LerCodigoCaixaAsync();
             buttonCaixa.IsVisible = false;
+            MostrarButton(buttonAdicionarStackLayout);
 		}
 
         private async Task LerCodigoCaixaAsync()
@@ -84,8 +86,8 @@ namespace CaixaApp.Views
                 {
 					Caixa.Codigo = CodigoLido;
 					await DefinirCaixa(Caixa.Codigo);
-			        CodigoLido = string.Empty;
-                }
+                    BuscarFerramentasCaixa(Caixa);
+				}
                 else
                 {
                     await DisplayAlert("Errado", "Codigo invalido", "ok");
@@ -102,9 +104,22 @@ namespace CaixaApp.Views
 			{
 				if (!string.IsNullOrEmpty(CodigoLido))
 				{
-					await CriarStakyLauout(CodigoLido);
-					ferramentas.Add(context.LocalizarFerramenta(CodigoLido));
-					CodigoLido = string.Empty;
+                    if (!VerificarRepeticao(CodigoLido))
+                    {
+                        if (CodigoLido!=Caixa.Codigo.ToString())
+                        {
+						    await CriarStakyLauout(CodigoLido);
+						    ferramentas.Add(context.LocalizarFerramenta(CodigoLido));
+                        }
+                        else
+                        {
+                            await DisplayAlert("Já foi", "A caixa já foi apontada...", "ok");
+                        }
+                    }
+                    else
+                    {
+					    await DisplayAlert("Já foi", "Essa ferramenta já foi apontada...", "ok");
+                    }
 				}
 				else
 				{
@@ -127,9 +142,32 @@ namespace CaixaApp.Views
         {
 			Caixa = context.LocalizarFerramenta(codigoLido);
             colaborador.IdCaixa = Caixa.Id;
-            colaborador = (context.LocalizarColaboradorCaixa(Caixa.IdCaixa));
-            labelColaborador.Text = colaborador.Nome;
+            DefinirColaborador(context.LocalizarColaboradorCaixa(Caixa.IdCaixa));
+			string texto = Caixa.Nome +" " + Caixa.Tipo;
+			labelCaixa.Text = texto;
+		}
+        private bool VerificarRepeticao(string codigoLido)
+        {
+            foreach (var ferramenta in ferramentas)
+            {
+                if(ferramenta.Codigo == codigoLido)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
+
+        private void BuscarFerramentasCaixa(Ferramenta caixa)
+        {
+            ferramentasCaixa = context.LocalizarFerramentasNaCaixa(caixa);
+        }
+
+        private void MostrarButton(Button button)
+        {
+			button.BackgroundColor = Color.Green;
+			button.TextColor = Color.White;
+		}
 
         private async Task CriarStakyLauout(string codigo)
         {
@@ -142,6 +180,8 @@ namespace CaixaApp.Views
                     var stackLayoutFerramenta = new StackLayout
                     {
                         Orientation = StackOrientation.Horizontal,
+                        VerticalOptions = LayoutOptions.CenterAndExpand,
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
                         Children =
                         {
                             new StackLayout
@@ -162,18 +202,19 @@ namespace CaixaApp.Views
                                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                                 Children =
                                 {
-                                    new Label {  Text = ferramenta.Nome, FontSize = 18 },
-                                    new Label { Text = ferramenta.Tipo, FontSize = 18 }
+                                    new Label {  Text = ferramenta.Nome, FontSize = 18, TextColor=Color.Black },
+                                    new Label { Text = ferramenta.Tipo, FontSize = 18, TextColor=Color.Black }
                                 }
                             }
                         }
                     };
                     var contentStackLayout = Content as StackLayout;
-                    if (contentStackLayout != null)
-                    {
-                        contentStackLayout.Children.Add(stackLayoutFerramenta);
-                    }
-                    ((StackLayout)Content).Children.Add(stackLayoutFerramenta);
+                    stackLayoutHome.Children.Add(stackLayoutFerramenta);
+                    //if (contentStackLayout != null)
+                    //{
+                    //    contentStackLayout.Children.Add(stackLayoutFerramenta);
+                    //}
+                    //((StackLayout)Content).Children.Add(stackLayoutFerramenta);
                     ferramentas.Add(ferramenta);
                 }
                 else
@@ -191,9 +232,9 @@ namespace CaixaApp.Views
 		{
             try
             {
-				if (await DisplayAlert("Confirmação", "Tem certeza que deseja finalizar?", "Sim", "Não"))
+                if (await DisplayAlert("Confirmação", "Tem certeza que deseja finalizar?", "Sim", "Não"))
                 {
-                    if (Processo=="Montar caixa")
+                    if (Processo == "Montar caixa")
                     {
                         foreach (var ferramenta in ferramentas)
                         {
@@ -201,10 +242,38 @@ namespace CaixaApp.Views
                             context.Atualizar(ferramenta);
                         }
                         context.Atualizar(colaborador);
+                        await DisplayAlert("Sucesso", "Sua caixa foi montada com sucesso!!", "Concluir");
+                    }
+                    else
+                    {
+                        foreach (var ferramentaEsperada in ferramentasCaixa)
+                        {
+                            foreach (var ferramenta in ferramentas)
+                            {
+                                if (ferramentaEsperada.Id == ferramenta.Id)
+                                {
+                                    ferramentasCaixa.Remove(ferramentaEsperada);
+                                }
+                            }
+                        }
+                        if (ferramentasCaixa.Count == 0)
+                        {
+                            await DisplayAlert("Sucesso", "Todas as ferramentas estão presentes!", "Concluir");
+                        }
+                        else
+                        {
+                            string Faltantes = string.Empty;
+                            foreach (var ferramentaFaltante in ferramentasCaixa)
+                            {
+                                Faltantes += ferramentaFaltante.Nome + "\n";
+                            }
+                            await DisplayAlert("Perai", "As seguintes ferramentas estão faltando...\n" + Faltantes, "Concluir");
+                        }
                     }
                 }
-            }
-            catch (Exception)
+				await Navigation.PushAsync(new Views.CaixaPage());
+			}
+			catch (Exception)
             {
                 throw;
             }
